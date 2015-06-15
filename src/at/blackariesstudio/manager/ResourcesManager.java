@@ -225,7 +225,7 @@ public class ResourcesManager
     	splash_region = null;
     }
     
-    public void loadLoadingScreen()
+    public void loadLoadingResources()
     {
     	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/menu/");
     	loadingTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);

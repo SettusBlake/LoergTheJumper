@@ -133,6 +133,7 @@ public class SceneManager
     public void createMenuScene()
     {
     	ResourcesManager.getInstance().loadMenuResources();
+    	ResourcesManager.getInstance().loadLoadingResources();
     	menuScene = new MainMenuScene();
     	loadingScene = new LoadingScene();
     	setScene(menuScene);

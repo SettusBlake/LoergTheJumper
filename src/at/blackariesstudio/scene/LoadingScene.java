@@ -13,12 +13,11 @@ public class LoadingScene extends BaseScene{
 
 	@Override
 	public void createScene() {
-		//setBackground(new Background(Color.BLACK));
 		
 		int width = (int) ResourcesManager.getInstance().camera.getWidth();
 		int height = (int) ResourcesManager.getInstance().camera.getHeight();
 		
-		Sprite backgroundSprite = new Sprite(width/2, height/2, resourcesManager.menu_background_region, vbom);
+		Sprite backgroundSprite = new Sprite(width/2, height/2, resourcesManager.loading_background_region, vbom);
 
 		final float red = 0;
 		final float green = 0;
