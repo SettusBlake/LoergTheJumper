@@ -110,7 +110,7 @@ public class SceneManager
         ResourcesManager.getInstance().unloadMenuTextures();
         this.menuScene.dispose();
         
-        mEngine.registerUpdateHandler(new TimerHandler(2f, new ITimerCallback() 
+        mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback() 
         {
             public void onTimePassed(final TimerHandler pTimerHandler) 
             {
@@ -153,7 +153,7 @@ public class SceneManager
         	
         }
         // Wird gemacht, sobald die alles davor erledigt wurde
-        mEngine.registerUpdateHandler(new TimerHandler(2f, new ITimerCallback() 
+        mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback() 
         {
             public void onTimePassed(final TimerHandler pTimerHandler) 
             {
