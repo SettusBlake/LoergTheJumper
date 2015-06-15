@@ -28,7 +28,6 @@ import org.andengine.util.level.simple.SimpleLevelEntityLoaderData;
 import org.andengine.util.level.simple.SimpleLevelLoader;
 import org.xml.sax.Attributes;
 
-import android.widget.Toast;
 import at.blackariesstudio.base.BaseScene;
 import at.blackariesstudio.extras.LevelCompleteWindow;
 import at.blackariesstudio.extras.LevelCompleteWindow.LoergEndCount;

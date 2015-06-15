@@ -35,6 +35,7 @@ public class ResourcesManager
     
     public Font game_font;
     public Font level_font;
+    public Font loading_font;
     public LevelSelectorWindow levelSelector;
     
     //---------------------------------------------
@@ -49,6 +50,10 @@ public class ResourcesManager
         
     private BuildableBitmapTextureAtlas menuTextureAtlas;
     public ITiledTextureRegion player_region;
+    
+    // Loading Scene
+    private BitmapTextureAtlas loadingTextureAtlas;
+    public ITextureRegion loading_background_region;
     
     // Game Texture
     public BuildableBitmapTextureAtlas gameTextureAtlas;
@@ -79,6 +84,7 @@ public class ResourcesManager
     {
         loadMenuGraphics();
         loadMenuAudio();
+        loadLoadingFont();
         loadLevelFonts();
         createLevelSelector();
     }
@@ -178,8 +184,7 @@ public class ResourcesManager
     private void loadLevelFonts()
     {
     	FontFactory.setAssetBasePath("font/");
-    	final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-    	
+		final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);  	
     	level_font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "levelfont.ttf", 40, true, android.graphics.Color.TRANSPARENT, 2, android.graphics.Color.BLACK);
     	level_font.load();
     }
@@ -187,11 +192,19 @@ public class ResourcesManager
     private void loadGameFont()
     {
     	FontFactory.setAssetBasePath("font/");
-    	final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-    	
+		final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);   	
     	game_font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "font.ttf", 50, true, android.graphics.Color.BLACK, 2, android.graphics.Color.WHITE);
     	game_font.load();
     }
+    
+    private void loadLoadingFont()
+    {
+    	FontFactory.setAssetBasePath("font/");
+		final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+    	loading_font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "font.ttf", 65, true, android.graphics.Color.BLACK, 2, android.graphics.Color.WHITE);
+    	loading_font.load();
+    }
+    
     
     private void loadGameAudio()
     {
@@ -210,6 +223,21 @@ public class ResourcesManager
     {
     	splashTextureAtlas.unload();
     	splash_region = null;
+    }
+    
+    public void loadLoadingScreen()
+    {
+    	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/menu/");
+    	loadingTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
+    	loading_background_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(loadingTextureAtlas, activity, "menu_background.png", 0, 0);
+    	loadingTextureAtlas.load();
+    	loadLoadingFont();
+    }
+    
+    public void unloadLoadingScreen()
+    {
+    	loadingTextureAtlas.unload();
+    	loading_background_region = null;
     }
     
     /**

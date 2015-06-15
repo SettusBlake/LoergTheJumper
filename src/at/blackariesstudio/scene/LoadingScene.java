@@ -13,7 +13,7 @@ public class LoadingScene extends BaseScene{
 
 	@Override
 	public void createScene() {
-		//setBackground(new Background(Color.GREEN));
+		//setBackground(new Background(Color.BLACK));
 		
 		int width = (int) ResourcesManager.getInstance().camera.getWidth();
 		int height = (int) ResourcesManager.getInstance().camera.getHeight();
@@ -28,7 +28,7 @@ public class LoadingScene extends BaseScene{
 
 		setBackground(background);
 		setBackgroundEnabled(true);
-		attachChild(new Text(240, 50, resourcesManager.level_font, "Loading....", vbom));
+		attachChild(new Text(width/2, 40, resourcesManager.loading_font, "Loading....", vbom));
 	}
 
 	@Override
