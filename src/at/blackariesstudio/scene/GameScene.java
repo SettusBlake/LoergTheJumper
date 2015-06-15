@@ -108,7 +108,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	
 	@Override
 	public void onBackKeyPressed() {
-		this.disposeScene();		
+		this.disposeScene();
         SceneManager.getInstance().createMenuScene();
         SceneManager.getInstance().loadMenuScene(engine);
 	}
@@ -120,7 +120,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 
 	@Override
 	public void disposeScene() {
-		//ResourcesManager.getInstance().activity.resetCamera();
 		ResourcesManager.getInstance().camera.setHUD(null);
 		ResourcesManager.getInstance().camera.setCenter(400, 240);
 		ResourcesManager.getInstance().camera.setChaseEntity(null); // nötig, da sonst beim zurück wechseln in das Menü, die kamera noch dem spieler folgt

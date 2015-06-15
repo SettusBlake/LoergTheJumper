@@ -167,7 +167,7 @@ public class ResourcesManager
         complete_window_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "level_complete_window.png");
         complete_stars_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "level_complete_tiled_loerg.png", 2, 1);
         
-        player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "loerg.png", 2, 1);
+        player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "LoergTiledSpriteVersuch_Klein.png", 2, 1);
        
         try 
         {

@@ -149,9 +149,8 @@ public class SceneManager
         if (this.gameScene != null)
         {
         	ResourcesManager.getInstance().unloadGameTextures();
-        	gameScene.disposeScene();
-        	
         }
+        
         // Wird gemacht, sobald die alles davor erledigt wurde
         mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback() 
         {

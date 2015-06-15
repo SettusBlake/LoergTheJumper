@@ -69,9 +69,9 @@ public abstract class Player extends AnimatedSprite{
     {
         canRun = true;
             
-        final long[] PLAYER_ANIMATE = new long[] { 100, 100 };
+        final long[] PLAYER_ANIMATE = new long[] { 200, 200 };
         // original: final long[] PLAYER_ANIMATE = new long[] { 100, 100, 100 };
-             
+
         animate(PLAYER_ANIMATE, 0, 1, true); // 0 und 0  heiﬂt: vom 0ten zum 0ten tile. ich hab in dem fall nur einen
     }
     
