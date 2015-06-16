@@ -76,7 +76,7 @@ public class Preferences {
 	
 	public synchronized void resetLevel()
 	{
-		mEditor.putInt(UNLOCKED_LEVEL_KEY, 4);
+		mEditor.putInt(UNLOCKED_LEVEL_KEY, 1);
 		mEditor.commit();
 	}
 }

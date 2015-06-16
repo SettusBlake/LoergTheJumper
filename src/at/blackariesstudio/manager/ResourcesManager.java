@@ -1,7 +1,6 @@
 package at.blackariesstudio.manager;
 
 import org.andengine.engine.Engine;
-import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
@@ -38,6 +37,7 @@ public class ResourcesManager
     public ZoomCamera camera;
     public VertexBufferObjectManager vbom;
     
+    public Font base_font;
     public Font game_font;
     public Font level_font;
     public Font loading_font;
@@ -75,13 +75,17 @@ public class ResourcesManager
     // Level beendet
     public ITextureRegion complete_window_region;
     public ITiledTextureRegion complete_stars_region;
-    public ITextureRegion ok_button_region;
-    public ITextureRegion no_button_region;
     
     // Level Selector
     public ITextureRegion level_selector_tile_region;
     public ITextureRegion level_base_window_region;
     public ITextureRegion level_close_button;
+    
+    // Yes No Auswahl-Fenster
+    private BuildableBitmapTextureAtlas yesNoMenuTextureAtlas;
+    public ITextureRegion ok_button_region;
+    public ITextureRegion no_button_region;
+    public ITextureRegion yesno_background_region;
     
     //---------------------------------------------
     // CLASS LOGIC
@@ -103,6 +107,13 @@ public class ResourcesManager
         loadGameAudio();
     }
     
+    public void loadYesNoMenuResources()
+    {
+    	loadBaseFont();
+    	loadYesNoGraphics();
+    	loadGameAudio();
+    }
+    
     public void createLevelSelector()
     {
     	this.levelSelector = new LevelSelectorWindow(this.vbom);
@@ -110,11 +121,11 @@ public class ResourcesManager
     
 	public void resetCamera()
 	{
-//		camera.setBounds(0, 0, this.camera_width, this.camera_height);
-//		camera.setXMin(0);
-//		camera.setYMin(0);
-//		camera.setXMax(this.camera_width);
-//		camera.setYMax(this.camera_height);
+		camera.setBounds(0, 0, this.camera_width, this.camera_height);
+		camera.setXMin(0);
+		camera.setYMin(0);
+		camera.setXMax(this.camera_width);
+		camera.setYMax(this.camera_height);
 		camera.reset();
 		camera.setZoomFactor(1.0f);
 		camera.setCenter(this.camera_width/2, this.camera_height/2);
@@ -149,6 +160,11 @@ public class ResourcesManager
     	}
     }
     
+	public void unloadYesNoMenuTextures()
+	{
+		this.yesNoMenuTextureAtlas.unload();
+	}
+	
     public void unloadGameTextures()
     {
         this.gameTextureAtlas.unload();
@@ -170,6 +186,28 @@ public class ResourcesManager
         
     }
     
+    private void loadYesNoGraphics()
+    {
+    	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/extras/");
+    	yesNoMenuTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
+    	
+        // Buttons
+        ok_button_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(yesNoMenuTextureAtlas, activity, "ok_button.png");
+        no_button_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(yesNoMenuTextureAtlas, activity, "no_button.png");
+        yesno_background_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(yesNoMenuTextureAtlas, activity, "yesno_background.png");
+        
+        try 
+        {
+            this.yesNoMenuTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
+            this.yesNoMenuTextureAtlas.load();
+        } 
+        catch (final TextureAtlasBuilderException e)
+        {
+            Debug.e(e);
+            System.out.println(e.getMessage());
+        }
+    }
+
     private void loadGameGraphics()
     {
     	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
@@ -187,10 +225,6 @@ public class ResourcesManager
         complete_window_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "level_complete_window.png");
         complete_stars_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "level_complete_tiled_loerg.png", 2, 1);
         
-        // Buttons zu dem Level Ende Fenster
-        ok_button_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "ok_button.png");
-        no_button_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "no_button.png");
-        
         player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "LoergTiledSpriteVersuch_Klein.png", 2, 1);
        
         try 
@@ -203,6 +237,14 @@ public class ResourcesManager
             Debug.e(e);
             System.out.println(e.getMessage());
         }
+    }
+    
+    private void loadBaseFont()
+    {
+    	FontFactory.setAssetBasePath("font/");
+		final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);  	
+    	base_font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "levelfont.ttf", 40, true, android.graphics.Color.TRANSPARENT, 2, android.graphics.Color.BLACK);
+    	base_font.load();
     }
     
     private void loadLevelFonts()

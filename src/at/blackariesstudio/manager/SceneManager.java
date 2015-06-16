@@ -10,6 +10,7 @@ import at.blackariesstudio.scene.GameScene;
 import at.blackariesstudio.scene.LoadingScene;
 import at.blackariesstudio.scene.MainMenuScene;
 import at.blackariesstudio.scene.SplashScene;
+import at.blackariesstudio.scene.YesNoMenuScene;
 
 public class SceneManager
 {
@@ -21,6 +22,7 @@ public class SceneManager
     private BaseScene menuScene;
     private BaseScene gameScene;
     private BaseScene loadingScene;
+    private BaseScene yesNoScene;
     
     //---------------------------------------------
     // VARIABLES
@@ -40,6 +42,7 @@ public class SceneManager
         SCENE_MENU,
         SCENE_GAME,
         SCENE_LOADING,
+        SCENE_YESNO,
     }
     
     //---------------------------------------------
@@ -71,6 +74,9 @@ public class SceneManager
                 break;
             case SCENE_LOADING:
                 setScene(loadingScene);
+                break;
+            case SCENE_YESNO:
+                setScene(yesNoScene);
                 break;
             default:
                 break;
@@ -116,10 +122,15 @@ public class SceneManager
     	{
     		createLoadingScene();
     	}
-        setScene(loadingScene);
-        ResourcesManager.getInstance().unloadMenuTextures();
-        menuScene.dispose();
+                
+        if (this.currentScene.equals(this.menuScene))
+        {
+            ResourcesManager.getInstance().unloadMenuTextures();
+            menuScene.dispose();
+        }
         
+        setScene(loadingScene);
+
         mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback() 
         {
             public void onTimePassed(final TimerHandler pTimerHandler) 
@@ -166,28 +177,56 @@ public class SceneManager
     	{
     		createLoadingScene();
     	}
-    	setScene(loadingScene);
-    	    	
+ 	
     	if (this.splashScene != null )
     	{
     		disposeSplashScene();
     		setScene(menuScene);
     	}
 
-    	// ToDo: Performance noch nicht perfekt
-        if (this.gameScene != null)
-        {
-        	gameScene.disposeScene();
-	        // Wird gemacht, sobald die alles davor erledigt wurde
-	        mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback() 
-	        {
-	            public void onTimePassed(final TimerHandler pTimerHandler) 
-	            {
-	                mEngine.unregisterUpdateHandler(pTimerHandler);
-	            	ResourcesManager.getInstance().unloadGameTextures();
-	                setScene(menuScene);
-	            }
-	        }));
-        }
+        setScene(loadingScene);
+        
+		// Wird gemacht, sobald die alles davor erledigt wurde
+		mEngine.registerUpdateHandler(new TimerHandler(0.1f,
+				new ITimerCallback() {
+					public void onTimePassed(final TimerHandler pTimerHandler) {
+						mEngine.unregisterUpdateHandler(pTimerHandler);
+				    	// ToDo: Performance noch nicht perfekt
+				        if (gameScene != null)
+				        {
+				        	ResourcesManager.getInstance().unloadGameTextures();
+				        	gameScene.dispose();
+				        }
+						setScene(menuScene);
+					}
+				}));
+        
     }
+
+	public void loadYesNoMenuScene(final Engine mEngine) 
+	{
+		ResourcesManager.getInstance().loadYesNoMenuResources();
+		yesNoScene = new YesNoMenuScene();
+		
+    	if (this.loadingScene == null)
+    	{
+    		createLoadingScene();
+    	}
+    	
+		setScene(loadingScene);
+		
+		// Wird gemacht, sobald die alles davor erledigt wurde
+		mEngine.registerUpdateHandler(new TimerHandler(0.1f,
+				new ITimerCallback() {
+					public void onTimePassed(final TimerHandler pTimerHandler) {
+						mEngine.unregisterUpdateHandler(pTimerHandler);
+						if (gameScene != null) 
+						{
+							ResourcesManager.getInstance().unloadGameTextures();
+							gameScene.disposeScene();
+						}
+						setScene(yesNoScene);
+					}
+				}));
+	}
 }

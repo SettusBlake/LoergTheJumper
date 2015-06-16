@@ -2,37 +2,23 @@ package at.blackariesstudio.extras;
 
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.menu.MenuScene;
-import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
-import org.andengine.entity.scene.menu.item.IMenuItem;
-import org.andengine.entity.scene.menu.item.SpriteMenuItem;
-import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.sprite.TiledSprite;
-import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import at.blackariesstudio.manager.ResourcesManager;
 import at.blackariesstudio.manager.SceneManager;
-import at.blackariesstudio.preferences.Preferences;
 
-public class LevelCompleteWindow extends Sprite implements IOnMenuItemClickListener
+public class LevelCompleteWindow extends Sprite
 {
     private TiledSprite head1;
     private TiledSprite head2;
     private TiledSprite head3;
-    
-    private MenuScene menuChildScene;
-    private IMenuItem okMenuItem;
-    private IMenuItem notOkMenuItem;
-    
+ 
     private Scene mScene;
     private ZoomCamera mCamera;
     private VertexBufferObjectManager mVbom;
-    
-	private final int MENU_OK = 0;
-	private final int MENU_NOT_OK = 1;
     
     public enum LoergEndCount
     {
@@ -101,58 +87,13 @@ public class LevelCompleteWindow extends Sprite implements IOnMenuItemClickListe
         mScene.attachChild(this);
     }
     
-    public void hideAndChoose()
-    {
-//    	mScene.detachChild(this);
-//    	mScene.clearTouchAreas();
-    	mScene.setVisible(false);
-    	
-    	Text weiterText = new Text(0,0, ResourcesManager.getInstance().game_font, "Nächstes Level?", mVbom);
-    	weiterText.setPosition(mCamera.getCenterX(), mCamera.getCenterY()+80);
-    	mScene.attachChild(weiterText);
-    	
-    	menuChildScene = new MenuScene(mCamera);
-    	//menuChildScene.setPosition(mCamera.getCenterX(), mCamera.getCenterY());
-    	menuChildScene.setPosition(0, 0);
-    	
-    	okMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_OK, ResourcesManager.getInstance().ok_button_region, mVbom), 0.5f, 0.7f);
-		notOkMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_NOT_OK, ResourcesManager.getInstance().no_button_region, mVbom), 0.5f, 0.7f);
-		
-		menuChildScene.buildAnimations();
-		menuChildScene.setBackgroundEnabled(false);
-		
-		okMenuItem.setPosition(mCamera.getCenterX()-50, mCamera.getCenterY());
-		notOkMenuItem.setPosition(mCamera.getCenterX()+20, mCamera.getCenterY());
-						
-		menuChildScene.setOnMenuItemClickListener(this);
-    	mScene.setChildScene(menuChildScene);
-    	
-    }
     
     @Override
 	public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
 	float pTouchAreaLocalX, float pTouchAreaLocalY) {
 		if(pSceneTouchEvent.isActionDown()){
-			hideAndChoose();
+			SceneManager.getInstance().loadYesNoMenuScene(ResourcesManager.getInstance().engine);
 		}
 		return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
-	}
-    
-	@Override
-	public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem,
-			float pMenuItemLocalX, float pMenuItemLocalY) {
-		
-		switch(pMenuItem.getID())
-        {
-        case MENU_OK:
-        	//Game Scene mit korrekten Level laden
-            SceneManager.getInstance().loadGameScene(ResourcesManager.getInstance().engine, Preferences.getInstance().getUnlockedLevelsCount());
-        	return true;
-        case MENU_NOT_OK:
-        	// Level Selector laden
-            return true;
-        default:
-            return false;
-        }
 	}
 }

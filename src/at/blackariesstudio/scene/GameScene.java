@@ -111,6 +111,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	
 	@Override
 	public void onBackKeyPressed() {
+		disposeScene();
+		player.stopAnimation();
+		detachChildren();
         SceneManager.getInstance().loadMenuScene(engine);
         ResourcesManager.getInstance().resetCamera();
 	}
@@ -124,7 +127,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	public void disposeScene() {
 		ResourcesManager.getInstance().camera.setHUD(null);
 		ResourcesManager.getInstance().camera.setChaseEntity(null); // nötig, da sonst beim zurück wechseln in das Menü, die kamera noch dem spieler folgt
-		this.dispose();
 	}
 
 	private void createBackground()
@@ -307,7 +309,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	                        {                   	
 	        	                if (!gameWon)
 	        	                {
-	        	                	//levelCompleteWindow.init(GameScene.this, (ZoomCamera) camera, vbom);
 	        	                	score /= 10;
 	        	                	if (score >= (coincount/3)*2)
 	        	                	{
@@ -325,7 +326,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	        	                	{
 	        	                		levelCompleteWindow.display(LoergEndCount.ONE);
 	        	                	}
-	        	                	this.setVisible(false);
+	        	                	//this.setVisible(false);
 	        	                	physicsWorld.clearPhysicsConnectors();
 	        	                	levelIncrease();
 	        	            	    GameScene.this.registerTouchArea(levelCompleteWindow);
