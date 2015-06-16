@@ -49,9 +49,10 @@ public class LevelSelectorWindow extends Sprite {
 				* (ROWS - 1)) * 0.5f;
 		this.mInitialY = (this.mCameraHeight * 0.5f) + halfLevelSelectorHeight;
 		
+		// For Debbuging - setzt den LevelCount auf zurück
 		if (Preferences.getInstance().getUnlockedLevelsCount() > 3)
 		{
-			ResourcesManager.getInstance().resetPrefLevel();
+			Preferences.getInstance().resetLevel();
 		}
 		this.setMaxLevel(Preferences.getInstance().getUnlockedLevelsCount());
 	}

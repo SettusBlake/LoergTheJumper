@@ -75,6 +75,8 @@ public class ResourcesManager
     // Level beendet
     public ITextureRegion complete_window_region;
     public ITiledTextureRegion complete_stars_region;
+    public ITextureRegion ok_button_region;
+    public ITextureRegion no_button_region;
     
     // Level Selector
     public ITextureRegion level_selector_tile_region;
@@ -181,8 +183,13 @@ public class ResourcesManager
         coin_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "loin.png");
         goal_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "goal.png");
         
+        // Level Ende Fenster
         complete_window_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "level_complete_window.png");
         complete_stars_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "level_complete_tiled_loerg.png", 2, 1);
+        
+        // Buttons zu dem Level Ende Fenster
+        ok_button_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "ok_button.png");
+        no_button_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "no_button.png");
         
         player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "LoergTiledSpriteVersuch_Klein.png", 2, 1);
        

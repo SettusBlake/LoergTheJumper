@@ -2,6 +2,7 @@ package at.blackariesstudio.scene;
 
 import java.io.IOException;
 
+import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -93,7 +94,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	
 	@Override
 	public void createScene() {
-		levelCompleteWindow = new LevelCompleteWindow(vbom);
+		levelCompleteWindow = new LevelCompleteWindow(GameScene.this, (ZoomCamera) camera, vbom);
 	    createBackground();
 	    createHUD();
 	    createPhysics();
@@ -210,6 +211,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	    }
 	    
 	    setLevelText(levelID);
+	    this.level = levelID;
 	    
 	    //Mutter Entity
 	    levelLoader.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(LevelConstants.TAG_LEVEL)
@@ -288,7 +290,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	            		        displayGameOverText();
 	            		    }
 	            		}
-
 	                };
 	                levelObject = player;
 	            }
@@ -302,29 +303,33 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	                        super.onManagedUpdate(pSecondsElapsed);
 	                        
 	                        if (player.collidesWith(this))
-	                        {
+	                        {                   	
 	        	                if (!gameWon)
 	        	                {
+	        	                	//levelCompleteWindow.init(GameScene.this, (ZoomCamera) camera, vbom);
 	        	                	score /= 10;
 	        	                	if (score >= (coincount/3)*2)
 	        	                	{
-	        	                		levelCompleteWindow.display(LoergEndCount.THREE, GameScene.this, camera);
+	        	                		levelCompleteWindow.display(LoergEndCount.THREE);
 	        	                	}
 	        	                	else if ((score >= (coincount/3)))
 	        	                	{
-	        	                		levelCompleteWindow.display(LoergEndCount.TWO, GameScene.this, camera);
+	        	                		levelCompleteWindow.display(LoergEndCount.TWO);
 	        	                	}
 	        	                	else if (score <= (coincount)/3)
 	        	                	{
-	        	                		levelCompleteWindow.display(LoergEndCount.ONE, GameScene.this, camera);
+	        	                		levelCompleteWindow.display(LoergEndCount.ONE);
 	        	                	}
 	        	                	else 
 	        	                	{
-	        	                		levelCompleteWindow.display(LoergEndCount.ONE, GameScene.this, camera);
+	        	                		levelCompleteWindow.display(LoergEndCount.ONE);
 	        	                	}
 	        	                	this.setVisible(false);
 	        	                	physicsWorld.clearPhysicsConnectors();
 	        	                	levelIncrease();
+	        	            	    GameScene.this.registerTouchArea(levelCompleteWindow);
+	        	            	    player.stopAnimation();
+	        	            	    player.setVisible(false);
 	        	                }
 	                            this.setIgnoreUpdate(true); // MÜnze wird vom UpdateHandler nicht mehr berücksichtigt
 	                        }

@@ -166,6 +166,7 @@ public class SceneManager
     	{
     		createLoadingScene();
     	}
+    	setScene(loadingScene);
     	    	
     	if (this.splashScene != null )
     	{
@@ -177,8 +178,7 @@ public class SceneManager
         if (this.gameScene != null)
         {
         	gameScene.disposeScene();
-        	setScene(loadingScene);
-        	
+           	
 	        // Wird gemacht, sobald die alles davor erledigt wurde
 	        mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback() 
 	        {
