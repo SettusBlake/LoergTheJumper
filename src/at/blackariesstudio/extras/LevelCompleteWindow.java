@@ -103,20 +103,30 @@ public class LevelCompleteWindow extends Sprite implements IOnMenuItemClickListe
     
     public void hideAndChoose()
     {
-    	setVisible(false);
+//    	mScene.detachChild(this);
+//    	mScene.clearTouchAreas();
+    	mScene.setVisible(false);
+    	
     	Text weiterText = new Text(0,0, ResourcesManager.getInstance().game_font, "Nächstes Level?", mVbom);
     	weiterText.setPosition(mCamera.getCenterX(), mCamera.getCenterY()+80);
+    	mScene.attachChild(weiterText);
     	
     	menuChildScene = new MenuScene(mCamera);
-    	menuChildScene.setPosition(mCamera.getCenterX(), mCamera.getCenterY()-20);
+    	//menuChildScene.setPosition(mCamera.getCenterX(), mCamera.getCenterY());
+    	menuChildScene.setPosition(0, 0);
     	
-    	okMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_OK, ResourcesManager.getInstance().ok_button_region, mVbom), 1f, 1.2f);
-		notOkMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_NOT_OK, ResourcesManager.getInstance().no_button_region, mVbom), 1f, 1.2f);
-    	
-		menuChildScene.setOnMenuItemClickListener(this);
+    	okMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_OK, ResourcesManager.getInstance().ok_button_region, mVbom), 0.5f, 0.7f);
+		notOkMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_NOT_OK, ResourcesManager.getInstance().no_button_region, mVbom), 0.5f, 0.7f);
 		
-    	mScene.attachChild(weiterText);
-    	mScene.attachChild(menuChildScene);
+		menuChildScene.buildAnimations();
+		menuChildScene.setBackgroundEnabled(false);
+		
+		okMenuItem.setPosition(mCamera.getCenterX()-50, mCamera.getCenterY());
+		notOkMenuItem.setPosition(mCamera.getCenterX()+20, mCamera.getCenterY());
+						
+		menuChildScene.setOnMenuItemClickListener(this);
+    	mScene.setChildScene(menuChildScene);
+    	
     }
     
     @Override
@@ -140,7 +150,6 @@ public class LevelCompleteWindow extends Sprite implements IOnMenuItemClickListe
         	return true;
         case MENU_NOT_OK:
         	// Level Selector laden
-
             return true;
         default:
             return false;

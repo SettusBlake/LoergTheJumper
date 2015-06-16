@@ -1,23 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <level width="3500" height="780">    
     <entity x="100" y="130" type="platform1"/>
-    <entity x="250" y="200" type="platform1"/>
-    <entity x="400" y="250" type="platform1"/>
-    <entity x="550" y="250" type="platform1"/>
-    <entity x="850" y="50" type="platform3"/>
-    <entity x="1100" y="100" type="platform1"/>
-    <entity x="1330" y="100" type="platform2"/>
-    <entity x="1480" y="100" type="platform1"/>
-    <entity x="1750" y="100" type="platform1"/>
-    <entity x="1920" y="150" type="platform1"/>
-    <entity x="2140" y="200" type="platform3"/>
-    <entity x="2300" y="300" type="platform1"/>
-    <entity x="2450" y="400" type="platform1"/>
-    <entity x="250" y="270" type="coin"/>
-    <entity x="550" y="320" type="coin"/>
-    <entity x="850" y="120" type="coin"/>
-    <entity x="1330" y="170" type="coin"/>
-    <entity x="2140" y="270" type="coin"/>
     <entity x="60" y="150" type="player"/>
-    <entity x="2550" y="450" type="goal"/>
+    <entity x="120" y="150" type="goal"/>
 </level>
