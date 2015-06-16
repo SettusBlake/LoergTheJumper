@@ -2,7 +2,7 @@ package at.blackariesstudio;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.LimitedFPSEngine;
-import org.andengine.engine.camera.BoundCamera;
+import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.engine.options.EngineOptions;
@@ -15,11 +15,13 @@ import org.andengine.ui.activity.BaseGameActivity;
 import android.view.KeyEvent;
 import at.blackariesstudio.manager.ResourcesManager;
 import at.blackariesstudio.manager.SceneManager;
+import at.blackariesstudio.preferences.Preferences;
 
 public class GameActivity extends BaseGameActivity{
 	
-	private BoundCamera camera;
+	private ZoomCamera camera;
 	private ResourcesManager resourcesManager;
+	private Preferences preferences;
 	
 	private static final int CAMERA_WIDTH = 800;
 	private static final int CAMERA_HEIGHT = 480;
@@ -27,7 +29,7 @@ public class GameActivity extends BaseGameActivity{
 	// Engine Optionen definieren. Wie verhält sich das Gerät während das Programm läuft
 	@Override
 	public EngineOptions onCreateEngineOptions() {
-		camera = new BoundCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
+		camera = new ZoomCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
 	    EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.camera);
 	    engineOptions.getAudioOptions().setNeedsMusic(true).setNeedsSound(true);
 	    engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON); // Bildschirm wird daudurch nicht ausgeschaltet
@@ -38,7 +40,13 @@ public class GameActivity extends BaseGameActivity{
 	public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) {
 		ResourcesManager.prepareManager(mEngine, this, camera, getVertexBufferObjectManager()); // prepareManager aufrufen und alles nötige übergeben
 		resourcesManager = ResourcesManager.getInstance();
-		pOnCreateResourcesCallback.onCreateResourcesFinished(); // Wird am Ende aufgerufen	
+		resourcesManager.setCameraHeight(GameActivity.CAMERA_HEIGHT);
+		resourcesManager.setCameraWidth(GameActivity.CAMERA_WIDTH);
+		
+		preferences = Preferences.getInstance();
+		preferences.init(this.getApplicationContext());
+
+		pOnCreateResourcesCallback.onCreateResourcesFinished(); // Wird am Ende aufgerufen
 	}
 
 	@Override
@@ -59,7 +67,7 @@ public class GameActivity extends BaseGameActivity{
 			@Override
 			public void onTimePassed(final TimerHandler pTimerHandler) {
 				mEngine.unregisterUpdateHandler(pTimerHandler);		
-				SceneManager.getInstance().createMenuScene();
+				SceneManager.getInstance().loadMenuScene(mEngine);
 			}
 		}));
 		
@@ -88,11 +96,5 @@ public class GameActivity extends BaseGameActivity{
 	        SceneManager.getInstance().getCurrentScene().onBackKeyPressed();
 	    }
 	    return false; 
-	}
-	
-	public void resetCamera()
-	{
-		camera = null;
-		camera = new BoundCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
 	}
 }

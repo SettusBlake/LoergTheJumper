@@ -11,6 +11,7 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import at.blackariesstudio.manager.ResourcesManager;
 import at.blackariesstudio.manager.SceneManager;
+import at.blackariesstudio.preferences.Preferences;
 import at.blackariesstudio.scene.MainMenuScene;
 
 public class LevelSelectorWindow extends Sprite {
@@ -48,7 +49,11 @@ public class LevelSelectorWindow extends Sprite {
 				* (ROWS - 1)) * 0.5f;
 		this.mInitialY = (this.mCameraHeight * 0.5f) + halfLevelSelectorHeight;
 		
-		this.setMaxLevel(10);
+		if (Preferences.getInstance().getUnlockedLevelsCount() > 3)
+		{
+			ResourcesManager.getInstance().resetPrefLevel();
+		}
+		this.setMaxLevel(Preferences.getInstance().getUnlockedLevelsCount());
 	}
 	
 	public void setMaxLevel(int lvl)
@@ -63,8 +68,7 @@ public class LevelSelectorWindow extends Sprite {
 		}
 	}
 
-	public void createTiles(final ITextureRegion pTextureRegion,
-			final Font pFont) {
+	public void createTiles(final ITextureRegion pTextureRegion, final Font pFont) {
 		this.scene = SceneManager.getInstance().getCurrentScene();
 		this.engine = ResourcesManager.getInstance().engine;
 		

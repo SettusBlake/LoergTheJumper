@@ -104,11 +104,21 @@ public class SceneManager
     	pOnCreateSceneCallback.onCreateSceneFinished(splashScene);
     }
     
+    private void createLoadingScene()
+    {
+    	ResourcesManager.getInstance().loadLoadingResources();
+    	loadingScene = new LoadingScene();
+    }
+    
     public void loadGameScene(final Engine mEngine, final int level)
     {
+    	if (this.loadingScene == null)
+    	{
+    		createLoadingScene();
+    	}
         setScene(loadingScene);
         ResourcesManager.getInstance().unloadMenuTextures();
-        this.menuScene.dispose();
+        menuScene.dispose();
         
         mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback() 
         {
@@ -130,12 +140,13 @@ public class SceneManager
     	splashScene = null;
     }
     
-    public void createMenuScene()
+    public void _createMenuScene()
     {
     	ResourcesManager.getInstance().loadMenuResources();
     	ResourcesManager.getInstance().loadLoadingResources();
     	menuScene = new MainMenuScene();
     	loadingScene = new LoadingScene();
+    	
     	setScene(menuScene);
     	if (this.splashScene != null )
     	{
@@ -145,20 +156,39 @@ public class SceneManager
     
     public void loadMenuScene(final Engine mEngine)
     {
-        setScene(loadingScene);
+    	// Muss gemacht werden, da nachdem eine GameScene aktiv war die Kamera Bounds nicht mehr passen und der Level-Editor schon aufgerufen wurde, bevor die game-scene disposed wird
+    	ResourcesManager.getInstance().resetCamera(); 
+    	
+    	ResourcesManager.getInstance().loadMenuResources();
+   		menuScene = new MainMenuScene();
+
+    	if (this.loadingScene == null)
+    	{
+    		createLoadingScene();
+    	}
+    	    	
+    	if (this.splashScene != null )
+    	{
+    		disposeSplashScene();
+    		setScene(menuScene);
+    	}
+
+    	// ToDo: Performance noch nicht perfekt
         if (this.gameScene != null)
         {
-        	ResourcesManager.getInstance().unloadGameTextures();
+        	gameScene.disposeScene();
+        	setScene(loadingScene);
+        	
+	        // Wird gemacht, sobald die alles davor erledigt wurde
+	        mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback() 
+	        {
+	            public void onTimePassed(final TimerHandler pTimerHandler) 
+	            {
+	                mEngine.unregisterUpdateHandler(pTimerHandler);
+	            	ResourcesManager.getInstance().unloadGameTextures();
+	                setScene(menuScene);
+	            }
+	        }));
         }
-        
-        // Wird gemacht, sobald die alles davor erledigt wurde
-        mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback() 
-        {
-            public void onTimePassed(final TimerHandler pTimerHandler) 
-            {
-                mEngine.unregisterUpdateHandler(pTimerHandler);
-                setScene(menuScene);
-            }
-        }));
     }
 }

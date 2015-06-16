@@ -7,6 +7,7 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import android.app.Activity;
 import at.blackariesstudio.manager.ResourcesManager;
 import at.blackariesstudio.manager.SceneManager.SceneType;
+import at.blackariesstudio.preferences.Preferences;
 
 // Kernklasse für jede erstellte Scene die wir brauchen. Wird abstrakt gehalten
 public abstract class BaseScene extends Scene
@@ -20,6 +21,7 @@ public abstract class BaseScene extends Scene
     protected ResourcesManager resourcesManager;
     protected VertexBufferObjectManager vbom;
     protected BoundCamera camera;
+    protected Preferences preferences;
     
     //---------------------------------------------
     // CONSTRUCTOR
@@ -32,6 +34,7 @@ public abstract class BaseScene extends Scene
         this.activity = resourcesManager.activity;
         this.vbom = resourcesManager.vbom;
         this.camera = resourcesManager.camera;
+        this.preferences = Preferences.getInstance();
         createScene();
     }
     
