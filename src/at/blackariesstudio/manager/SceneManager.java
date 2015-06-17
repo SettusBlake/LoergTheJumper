@@ -208,15 +208,8 @@ public class SceneManager
 		ResourcesManager.getInstance().loadYesNoMenuResources();
 		yesNoScene = new YesNoMenuScene();
 		
-    	if (this.loadingScene == null)
-    	{
-    		createLoadingScene();
-    	}
-    	
-		setScene(loadingScene);
-		
 		// Wird gemacht, sobald die alles davor erledigt wurde
-		mEngine.registerUpdateHandler(new TimerHandler(0.1f,
+		mEngine.registerUpdateHandler(new TimerHandler(0.3f,
 				new ITimerCallback() {
 					public void onTimePassed(final TimerHandler pTimerHandler) {
 						mEngine.unregisterUpdateHandler(pTimerHandler);

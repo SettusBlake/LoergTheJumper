@@ -211,13 +211,13 @@ public class ResourcesManager
     private void loadGameGraphics()
     {
     	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
-        gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 2048, 2048, TextureOptions.BILINEAR);
+        gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 3096, 2048, TextureOptions.BILINEAR);
         
         game_background_region_back = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "background_back.png");
         game_background_region_front = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "background_front.png");
-        platform1_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "platform_g.png");
-        platform2_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "platform_r.png");
-        platform3_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "platform_y.png");
+        platform1_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "platform_blau.png");
+        platform2_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "platform_rot.png");
+        platform3_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "platform_gelb.png");
         coin_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "loin.png");
         goal_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "goal.png");
         
@@ -259,7 +259,7 @@ public class ResourcesManager
     {
     	FontFactory.setAssetBasePath("font/");
 		final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);   	
-    	game_font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "font.ttf", 50, true, android.graphics.Color.BLACK, 2, android.graphics.Color.WHITE);
+    	game_font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "font.ttf", 40, true, android.graphics.Color.BLACK, 2, android.graphics.Color.WHITE);
     	game_font.load();
     }
     
@@ -279,6 +279,7 @@ public class ResourcesManager
     
     public void loadSplashScreen()
     {
+    	loadBaseFont();
     	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
     	splashTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
     	splash_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(splashTextureAtlas, activity, "splash.png", 0, 0);

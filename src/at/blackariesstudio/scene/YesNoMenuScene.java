@@ -75,11 +75,10 @@ public class YesNoMenuScene extends BaseScene implements IOnMenuItemClickListene
     	attachChild(weiterText);
     	
     	menuChildScene = new MenuScene(camera);
-    	//menuChildScene.setPosition(mCamera.getCenterX(), mCamera.getCenterY());
     	menuChildScene.setPosition(0,0);
     	
     	okMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_OK, resourcesManager.ok_button_region, vbom), 0.7f, 1f);
-		notOkMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_NOT_OK, resourcesManager.no_button_region, vbom), 0.7f, 1f);
+		notOkMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_NOT_OK, resourcesManager.no_button_region, vbom), 0.6f, 0.9f);
 		
 		menuChildScene.addMenuItem(okMenuItem);
 		menuChildScene.addMenuItem(notOkMenuItem);
@@ -103,7 +102,7 @@ public class YesNoMenuScene extends BaseScene implements IOnMenuItemClickListene
         {
         case MENU_OK:
         	//Game Scene mit korrekten Level laden
-            SceneManager.getInstance().loadGameScene(engine, Preferences.getInstance().getUnlockedLevelsCount());
+            SceneManager.getInstance().loadGameScene(engine, Preferences.getInstance().getCurr_level()+1);
         	return true;
         case MENU_NOT_OK:
         	SceneManager.getInstance().loadMenuScene(engine);

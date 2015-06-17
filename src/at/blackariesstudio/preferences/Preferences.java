@@ -13,6 +13,7 @@ public class Preferences {
 	// Dies sind die Eigenschaften die gespeichert werden sollen
 	private static final String UNLOCKED_LEVEL_KEY = "unlockedLevels"; // Levelfortschritt
 	private static final String HIGH_SCORE_KEY = "highScore"; // höchster Highscore
+	private static final String MAX_LEVEL = "maxLevel";
 	
 	// SharedPreferences Objekt und der Editior zum bearbeiten (speichern/laden)
 	private SharedPreferences mSettings;
@@ -21,6 +22,10 @@ public class Preferences {
 	// Die Datentypen für die Keys
 	private int mUnlockedLevels;
 	private int mHighScore;
+	private int mMaxLevel;
+	
+	// Temporärer Speicherer während das Spiel läuft
+	private int curr_level;
 	
 	Preferences()
 	{
@@ -47,17 +52,28 @@ public class Preferences {
 			
 			// Highscore: init = 0
 			mHighScore = mSettings.getInt(HIGH_SCORE_KEY, 0);
+			
+			// Max Level
+			mMaxLevel = mSettings.getInt(MAX_LEVEL, 10);
 		}
 	}
 	
+	public int getCurr_level() {
+		return curr_level;
+	}
+
+	public void setCurr_level(int curr_level) {
+		this.curr_level = curr_level;
+	}
+
 	public synchronized int getUnlockedLevelsCount()
 	{
 		return mUnlockedLevels;
 	}
 	
-	public synchronized int getHighScore()
+	public synchronized int getHighScore(int level)
 	{
-		return mHighScore;
+		return mSettings.getInt(HIGH_SCORE_KEY + String.valueOf(level), 0);
 	}
 	
 	public synchronized void unlockNextLevel()
@@ -67,16 +83,27 @@ public class Preferences {
 		mEditor.commit();		
 	}
 	
-	public synchronized void setHighScore(int newHighscore)
+	public synchronized void saveHighScore(int newHighscore, int level)
 	{
 		mHighScore = newHighscore;
-		mEditor.putInt(HIGH_SCORE_KEY, mHighScore);
+		mEditor.putInt(HIGH_SCORE_KEY + String.valueOf(level), mHighScore);
 		mEditor.commit();
 	}
 	
 	public synchronized void resetLevel()
 	{
 		mEditor.putInt(UNLOCKED_LEVEL_KEY, 1);
+		mEditor.commit();
+	}
+	
+	public synchronized int getMaxLevel()
+	{
+		return mMaxLevel;
+	}
+	
+	public synchronized void setMaxLevel(int maxLevel)
+	{
+		mEditor.putInt(MAX_LEVEL, maxLevel);
 		mEditor.commit();
 	}
 }

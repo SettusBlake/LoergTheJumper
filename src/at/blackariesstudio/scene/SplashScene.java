@@ -24,9 +24,14 @@ public class SplashScene extends BaseScene{
 			}
 		};
 		
+//    	Text companyText = new Text(0,0, resourcesManager.base_font, "Black Aries Studios", vbom);
+//    	companyText.setPosition(camera.getCenterX(), camera.getCenterY()-150);
+//    	attachChild(companyText);
+		
 		splash.setScale(1.5f);
 		splash.setPosition((ResourcesManager.getInstance().camera.getWidth()/2) , ResourcesManager.getInstance().camera.getHeight()/2);
 		attachChild(splash); // hinzufügen zur Scene
+		
 	}
 
 	@Override

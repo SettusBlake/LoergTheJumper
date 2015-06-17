@@ -45,6 +45,7 @@ public class GameActivity extends BaseGameActivity{
 		
 		preferences = Preferences.getInstance();
 		preferences.init(this.getApplicationContext());
+		preferences.setMaxLevel(10);
 
 		pOnCreateResourcesCallback.onCreateResourcesFinished(); // Wird am Ende aufgerufen
 	}

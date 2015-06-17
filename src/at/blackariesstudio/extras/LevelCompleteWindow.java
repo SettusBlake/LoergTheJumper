@@ -9,6 +9,7 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import at.blackariesstudio.manager.ResourcesManager;
 import at.blackariesstudio.manager.SceneManager;
+import at.blackariesstudio.preferences.Preferences;
 
 public class LevelCompleteWindow extends Sprite
 {
@@ -92,7 +93,16 @@ public class LevelCompleteWindow extends Sprite
 	public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
 	float pTouchAreaLocalX, float pTouchAreaLocalY) {
 		if(pSceneTouchEvent.isActionDown()){
-			SceneManager.getInstance().loadYesNoMenuScene(ResourcesManager.getInstance().engine);
+			if (Preferences.getInstance().getCurr_level() < Preferences.getInstance().getMaxLevel())
+			{
+				SceneManager.getInstance().loadYesNoMenuScene(ResourcesManager.getInstance().engine);
+			}
+			else
+			{
+				detachChildren();
+		        SceneManager.getInstance().loadMenuScene(ResourcesManager.getInstance().engine);
+		        ResourcesManager.getInstance().resetCamera();
+			}
 		}
 		return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
 	}

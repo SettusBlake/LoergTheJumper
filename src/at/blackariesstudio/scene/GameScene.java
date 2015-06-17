@@ -59,7 +59,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM2 = "platform2";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM3 = "platform3";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN = "coin";
-	
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER = "player";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GOAL = "goal";
 
@@ -69,6 +68,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	private HUD gameHUD;
 	private Text scoreText;
 	private Text levelText;
+	private Text highScoreText;
 	private int score = 0;
 	private int level = 1;
 	private int coincount = 0;
@@ -142,9 +142,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 		Sprite front = new Sprite(width * 0.5f, textureHeight *
 				0.5f, resourcesManager.game_background_region_front,
 				engine.getVertexBufferObjectManager());
+		
+//		Sprite front = new Sprite(width, resourcesManager.game_background_region_front, resourcesManager.game_background_region_front,
+//		engine.getVertexBufferObjectManager());
+
 
 		// Float werte sind für den standard rgp wert - hintergrundfarbe
-		ParallaxBackground background = new ParallaxBackground(0.3f, 0.3f, 0.9f) {
+		ParallaxBackground background = new ParallaxBackground(0.3f, 0.3f, 0.3f) {
 
 			float cameraPreviousX = 0;
 			float parallaxValueOffset = 0;
@@ -175,18 +179,24 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	private void createHUD()
 	{
 	    gameHUD = new HUD();
-	    int y = (int) ResourcesManager.getInstance().camera.getHeight()-60;
-	    int x = (int) ResourcesManager.getInstance().camera.getWidth()-250;
+	    int y = (int) ResourcesManager.getInstance().camera.getHeight()-50;
+	    int x = (int) ResourcesManager.getInstance().camera.getWidth()-230;
 	    
 	 // CREATE SCORE TEXT
-	    scoreText = new Text(20, y, resourcesManager.game_font, "Score 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
+	    highScoreText = new Text(15, y, resourcesManager.game_font, "Highscore 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
+	    scoreText = new Text(15, y-40, resourcesManager.game_font, "Score 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
 	    levelText = new Text(x, y, resourcesManager.game_font, "LVL 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
+	    
 	    scoreText.setAnchorCenter(0, 0);
 	    levelText.setAnchorCenter(0, 0);
+	    highScoreText.setAnchorCenter(0, 0);
+	    
 	    scoreText.setText("Score 0");
 	    levelText.setText("LVL 0");
+	    highScoreText.setText("Highscore 0");
 	    gameHUD.attachChild(scoreText);
 	    gameHUD.attachChild(levelText);
+	    gameHUD.attachChild(highScoreText);
 	    
 	    camera.setHUD(gameHUD);
 	}
@@ -215,6 +225,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	    
 	    setLevelText(levelID);
 	    this.level = levelID;
+	    Preferences.getInstance().setCurr_level(levelID);
+	    highScoreText.setText("Highscore " + String.valueOf(Preferences.getInstance().getHighScore(levelID)));
 	    
 	    //Mutter Entity
 	    levelLoader.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(LevelConstants.TAG_LEVEL)
@@ -309,6 +321,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	                        {                   	
 	        	                if (!gameWon)
 	        	                {
+	        	                	Preferences.getInstance().saveHighScore(score, level);
 	        	                	score /= 10;
 	        	                	if (score >= (coincount/3)*2)
 	        	                	{
@@ -326,14 +339,14 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	        	                	{
 	        	                		levelCompleteWindow.display(LoergEndCount.ONE);
 	        	                	}
-	        	                	//this.setVisible(false);
+
 	        	                	physicsWorld.clearPhysicsConnectors();
 	        	                	levelIncrease();
-	        	            	    GameScene.this.registerTouchArea(levelCompleteWindow);
+	        	                	GameScene.this.registerTouchArea(levelCompleteWindow);
 	        	            	    player.stopAnimation();
 	        	            	    player.setVisible(false);
 	        	                }
-	                            this.setIgnoreUpdate(true); // MÜnze wird vom UpdateHandler nicht mehr berücksichtigt
+	                            this.setIgnoreUpdate(true); // Münze wird vom UpdateHandler nicht mehr berücksichtigt
 	                        }
 	                    }
 	            	};
@@ -397,7 +410,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	private void levelIncrease() {
 		// Wenn das aktuelle Level-1 mit dem gespeicherten übereinstimmt, wird
 		// das nächste Level freigeschalten
-		if (Preferences.getInstance().getUnlockedLevelsCount() == level) {
+		
+		if ((Preferences.getInstance().getUnlockedLevelsCount() == level) && (level < Preferences.getInstance().getMaxLevel())) {
 			Preferences.getInstance().unlockNextLevel();
 		}
 	}
