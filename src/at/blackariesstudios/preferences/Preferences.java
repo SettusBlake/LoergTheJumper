@@ -14,6 +14,7 @@ public class Preferences {
 	private static final String UNLOCKED_LEVEL_KEY = "unlockedLevels"; // Levelfortschritt
 	private static final String HIGH_SCORE_KEY = "highScore"; // höchster Highscore
 	private static final String MAX_LEVEL = "maxLevel";
+	private static final String RANDOM_LEVEL_COUNT = "rlevelcount";
 	
 	// SharedPreferences Objekt und der Editior zum bearbeiten (speichern/laden)
 	private SharedPreferences mSettings;

@@ -42,7 +42,7 @@ public abstract class Player extends AnimatedSprite{
 
         body.setUserData("player");
         body.setFixedRotation(true);
-        
+                
         physicsWorld.registerPhysicsConnector(new PhysicsConnector(this, body, true, false)
         {
             @Override

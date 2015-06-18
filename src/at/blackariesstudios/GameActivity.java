@@ -13,6 +13,7 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import android.view.KeyEvent;
+import at.blackariesstudios.generator.LevelGenerator;
 import at.blackariesstudios.manager.ResourcesManager;
 import at.blackariesstudios.manager.SceneManager;
 import at.blackariesstudios.preferences.Preferences;
@@ -46,6 +47,10 @@ public class GameActivity extends BaseGameActivity{
 		preferences = Preferences.getInstance();
 		preferences.init(this.getApplicationContext());
 		preferences.setMaxLevel(10);
+		
+		//TEST
+		LevelGenerator lv = new LevelGenerator();
+		lv.generate();
 
 		pOnCreateResourcesCallback.onCreateResourcesFinished(); // Wird am Ende aufgerufen
 	}
