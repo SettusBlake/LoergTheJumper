@@ -28,8 +28,8 @@ public class LevelGenerator {
 	{
 		try {
 			
-			newxmlFile= new File(Environment.getExternalStorageDirectory()+"/at.blackariesstudios.randomlevel/random_level.xml");   
-		    //newxmlfile.getParentFile().mkdirs();
+			newxmlFile= new File(Environment.getExternalStorageDirectory()+"/atblackariesstudiosrandomlevel/random_level.xml");   
+		    newxmlFile.getParentFile().mkdirs();
 		    
 			FileOutputStream fos = new FileOutputStream(newxmlFile);
 
