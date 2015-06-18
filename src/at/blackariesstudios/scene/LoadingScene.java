@@ -1,13 +1,13 @@
-package at.blackariesstudio.scene;
+package at.blackariesstudios.scene;
 
 import org.andengine.entity.scene.background.SpriteBackground;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 
-import at.blackariesstudio.base.BaseScene;
-import at.blackariesstudio.manager.ResourcesManager;
-import at.blackariesstudio.manager.SceneManager;
-import at.blackariesstudio.manager.SceneManager.SceneType;
+import at.blackariesstudios.base.BaseScene;
+import at.blackariesstudios.manager.ResourcesManager;
+import at.blackariesstudios.manager.SceneManager;
+import at.blackariesstudios.manager.SceneManager.SceneType;
 
 public class LoadingScene extends BaseScene{
 

@@ -1,16 +1,16 @@
-package at.blackariesstudio.manager;
+package at.blackariesstudios.manager;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
 
-import at.blackariesstudio.base.BaseScene;
-import at.blackariesstudio.scene.GameScene;
-import at.blackariesstudio.scene.LoadingScene;
-import at.blackariesstudio.scene.MainMenuScene;
-import at.blackariesstudio.scene.SplashScene;
-import at.blackariesstudio.scene.YesNoMenuScene;
+import at.blackariesstudios.base.BaseScene;
+import at.blackariesstudios.scene.GameScene;
+import at.blackariesstudios.scene.LoadingScene;
+import at.blackariesstudios.scene.MainMenuScene;
+import at.blackariesstudios.scene.SplashScene;
+import at.blackariesstudios.scene.YesNoMenuScene;
 
 public class SceneManager
 {

@@ -1,4 +1,4 @@
-package at.blackariesstudio.preferences;
+package at.blackariesstudios.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;

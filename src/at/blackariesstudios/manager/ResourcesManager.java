@@ -1,4 +1,4 @@
-package at.blackariesstudio.manager;
+package at.blackariesstudios.manager;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.ZoomCamera;
@@ -17,9 +17,9 @@ import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
 
-import at.blackariesstudio.GameActivity;
-import at.blackariesstudio.extras.LevelSelectorWindow;
-import at.blackariesstudio.preferences.Preferences;
+import at.blackariesstudios.GameActivity;
+import at.blackariesstudios.extras.LevelSelectorWindow;
+import at.blackariesstudios.preferences.Preferences;
 
 public class ResourcesManager
 {

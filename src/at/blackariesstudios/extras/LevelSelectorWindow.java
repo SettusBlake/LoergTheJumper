@@ -1,4 +1,4 @@
-package at.blackariesstudio.extras;
+package at.blackariesstudios.extras;
 
 import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
@@ -9,10 +9,10 @@ import org.andengine.opengl.font.Font;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import at.blackariesstudio.manager.ResourcesManager;
-import at.blackariesstudio.manager.SceneManager;
-import at.blackariesstudio.preferences.Preferences;
-import at.blackariesstudio.scene.MainMenuScene;
+import at.blackariesstudios.manager.ResourcesManager;
+import at.blackariesstudios.manager.SceneManager;
+import at.blackariesstudios.preferences.Preferences;
+import at.blackariesstudios.scene.MainMenuScene;
 
 public class LevelSelectorWindow extends Sprite {
 

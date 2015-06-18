@@ -1,12 +1,12 @@
-package at.blackariesstudio.scene;
+package at.blackariesstudios.scene;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.util.GLState;
 
-import at.blackariesstudio.base.BaseScene;
-import at.blackariesstudio.manager.ResourcesManager;
-import at.blackariesstudio.manager.SceneManager.SceneType;
+import at.blackariesstudios.base.BaseScene;
+import at.blackariesstudios.manager.ResourcesManager;
+import at.blackariesstudios.manager.SceneManager.SceneType;
 
 public class SplashScene extends BaseScene{
 	

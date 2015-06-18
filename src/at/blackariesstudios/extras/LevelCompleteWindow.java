@@ -1,4 +1,4 @@
-package at.blackariesstudio.extras;
+package at.blackariesstudios.extras;
 
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.entity.scene.Scene;
@@ -7,9 +7,9 @@ import org.andengine.entity.sprite.TiledSprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import at.blackariesstudio.manager.ResourcesManager;
-import at.blackariesstudio.manager.SceneManager;
-import at.blackariesstudio.preferences.Preferences;
+import at.blackariesstudios.manager.ResourcesManager;
+import at.blackariesstudios.manager.SceneManager;
+import at.blackariesstudios.preferences.Preferences;
 
 public class LevelCompleteWindow extends Sprite
 {

@@ -1,4 +1,4 @@
-package at.blackariesstudio.scene;
+package at.blackariesstudios.scene;
 
 import java.io.IOException;
 
@@ -29,14 +29,14 @@ import org.andengine.util.level.simple.SimpleLevelEntityLoaderData;
 import org.andengine.util.level.simple.SimpleLevelLoader;
 import org.xml.sax.Attributes;
 
-import at.blackariesstudio.base.BaseScene;
-import at.blackariesstudio.extras.LevelCompleteWindow;
-import at.blackariesstudio.extras.LevelCompleteWindow.LoergEndCount;
-import at.blackariesstudio.manager.ResourcesManager;
-import at.blackariesstudio.manager.SceneManager;
-import at.blackariesstudio.manager.SceneManager.SceneType;
-import at.blackariesstudio.object.Player;
-import at.blackariesstudio.preferences.Preferences;
+import at.blackariesstudios.base.BaseScene;
+import at.blackariesstudios.extras.LevelCompleteWindow;
+import at.blackariesstudios.extras.LevelCompleteWindow.LoergEndCount;
+import at.blackariesstudios.manager.ResourcesManager;
+import at.blackariesstudios.manager.SceneManager;
+import at.blackariesstudios.manager.SceneManager.SceneType;
+import at.blackariesstudios.object.Player;
+import at.blackariesstudios.preferences.Preferences;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;

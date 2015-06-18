@@ -1,4 +1,4 @@
-package at.blackariesstudio;
+package at.blackariesstudios;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.LimitedFPSEngine;
@@ -13,9 +13,9 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import android.view.KeyEvent;
-import at.blackariesstudio.manager.ResourcesManager;
-import at.blackariesstudio.manager.SceneManager;
-import at.blackariesstudio.preferences.Preferences;
+import at.blackariesstudios.manager.ResourcesManager;
+import at.blackariesstudios.manager.SceneManager;
+import at.blackariesstudios.preferences.Preferences;
 
 public class GameActivity extends BaseGameActivity{
 	
