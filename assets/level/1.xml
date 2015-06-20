@@ -2,6 +2,7 @@
 <level width="3500" height="800">    
     <entity x="100" y="130" type="platform1"/>
     <entity x="250" y="200" type="platform1"/>
+    <entity x="250" y="270" type="coin"/>
     <entity x="400" y="250" type="platform1"/>
     <entity x="550" y="250" type="platform1"/>
     <entity x="850" y="100" type="platform1"/>
@@ -13,7 +14,6 @@
     <entity x="2140" y="200" type="platform1"/>
     <entity x="2300" y="300" type="platform1"/>
     <entity x="2450" y="400" type="platform1"/>
-    <entity x="250" y="270" type="coin"/>
     <entity x="550" y="320" type="coin"/>
     <entity x="850" y="170" type="coin"/>
     <entity x="1330" y="170" type="coin"/>

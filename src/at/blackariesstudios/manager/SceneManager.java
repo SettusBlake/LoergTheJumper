@@ -200,7 +200,6 @@ public class SceneManager
 						setScene(menuScene);
 					}
 				}));
-        
     }
 
 	public void loadYesNoMenuScene(final Engine mEngine) 

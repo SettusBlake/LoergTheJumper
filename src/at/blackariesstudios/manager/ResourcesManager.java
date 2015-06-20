@@ -74,7 +74,7 @@ public class ResourcesManager
     
     // Level beendet
     public ITextureRegion complete_window_region;
-    public ITiledTextureRegion complete_stars_region;
+    public ITiledTextureRegion complete_loergs_region;
     
     // Level Selector
     public ITextureRegion level_selector_tile_region;
@@ -223,7 +223,7 @@ public class ResourcesManager
         
         // Level Ende Fenster
         complete_window_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "level_complete_window.png");
-        complete_stars_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "level_complete_tiled_loerg.png", 2, 1);
+        complete_loergs_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "level_complete_tiled_loerg.png", 2, 1);
         
         player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "LoergTiledSpriteVersuch_Klein.png", 2, 1);
        

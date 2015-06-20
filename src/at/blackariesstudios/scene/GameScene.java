@@ -37,6 +37,7 @@ import at.blackariesstudios.manager.SceneManager;
 import at.blackariesstudios.manager.SceneManager.SceneType;
 import at.blackariesstudios.object.Player;
 import at.blackariesstudios.preferences.Preferences;
+import at.blackariesstudios.preferences.Preferences.LEVELTYPE;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -226,7 +227,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	    setLevelText(levelID);
 	    this.level = levelID;
 	    Preferences.getInstance().setCurr_level(levelID);
-	    highScoreText.setText("Highscore " + String.valueOf(Preferences.getInstance().getHighScore(levelID)));
+	    highScoreText.setText("Highscore " + String.valueOf(Preferences.getInstance().getHighScore(levelID, LEVELTYPE.NORMAL)));
 	    
 	    //Mutter Entity
 	    levelLoader.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(LevelConstants.TAG_LEVEL)
@@ -321,7 +322,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	                        {                   	
 	        	                if (!gameWon)
 	        	                {
-	        	                	Preferences.getInstance().saveHighScore(score, level);
+	        	                	Preferences.getInstance().saveHighScore(score, level, LEVELTYPE.NORMAL);
 	        	                	score /= 10;
 	        	                	if (score >= (coincount/3)*2)
 	        	                	{
@@ -442,6 +443,21 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 									}
 								}));
 					}
+					
+					if (x2.getBody().getUserData().equals("platform3")
+							&& x1.getBody().getUserData().equals("player")) {
+						engine.registerUpdateHandler(new TimerHandler(0.25f,
+								new ITimerCallback() {
+									public void onTimePassed(
+											final TimerHandler pTimerHandler) {
+										pTimerHandler.reset();
+										engine.unregisterUpdateHandler(pTimerHandler);
+										x2.getBody().setType(
+												BodyType.DynamicBody);
+									}
+								}));
+					}
+					
 	                if (x1.getBody().getUserData().equals("platform2") && x2.getBody().getUserData().equals("player"))
 	                {
 	                    engine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback()
@@ -454,13 +470,28 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	                        }
 	                    }));
 	                } 
-	                if (x2.getBody().getUserData().equals("player"))
+	                
+	                if (x2.getBody().getUserData().equals("platform2") && x1.getBody().getUserData().equals("player"))
+	                {
+	                    engine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback()
+	                    {                                    
+	                        public void onTimePassed(final TimerHandler pTimerHandler)
+	                        {
+	                            pTimerHandler.reset();
+	                            engine.unregisterUpdateHandler(pTimerHandler);
+	                            x2.getBody().setType(BodyType.DynamicBody);
+	                        }
+	                    }));
+	                } 
+	                
+	                if (x2.getBody().getUserData().equals("player") || x1.getBody().getUserData().equals("player"))
 	                {
 	                    player.increaseFootContacts();
 	                }
 	            }
 	        }
 
+	        // wenn der kontakt nicht mehr besteht
 	        public void endContact(Contact contact)
 	        {
 	            final Fixture x1 = contact.getFixtureA();
@@ -468,7 +499,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 
 	            if (x1.getBody().getUserData() != null && x2.getBody().getUserData() != null)
 	            {
-	                if (x2.getBody().getUserData().equals("player"))
+	                if (x2.getBody().getUserData().equals("player") || x1.getBody().getUserData().equals("player"))
 	                {
 	                    player.decreaseFootContacts();
 	                }

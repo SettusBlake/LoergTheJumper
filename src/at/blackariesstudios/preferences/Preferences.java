@@ -14,7 +14,7 @@ public class Preferences {
 	private static final String UNLOCKED_LEVEL_KEY = "unlockedLevels"; // Levelfortschritt
 	private static final String HIGH_SCORE_KEY = "highScore"; // höchster Highscore
 	private static final String MAX_LEVEL = "maxLevel";
-	private static final String RANDOM_LEVEL_COUNT = "rlevelcount";
+	private static final String RANDOM_LEVEL_COUNT = "randomLevelCount";
 	
 	// SharedPreferences Objekt und der Editior zum bearbeiten (speichern/laden)
 	private SharedPreferences mSettings;
@@ -24,9 +24,16 @@ public class Preferences {
 	private int mUnlockedLevels;
 	private int mHighScore;
 	private int mMaxLevel;
+	private int mRandomLevelCount;
 	
 	// Temporärer Speicherer während das Spiel läuft
 	private int curr_level;
+	
+	public enum LEVELTYPE
+    {
+		NORMAL,
+		RANDOM,
+    }
 	
 	Preferences()
 	{
@@ -56,6 +63,9 @@ public class Preferences {
 			
 			// Max Level
 			mMaxLevel = mSettings.getInt(MAX_LEVEL, 10);
+			
+			// Random level Count
+			mRandomLevelCount = mSettings.getInt(RANDOM_LEVEL_COUNT, 0);
 		}
 	}
 	
@@ -72,7 +82,7 @@ public class Preferences {
 		return mUnlockedLevels;
 	}
 	
-	public synchronized int getHighScore(int level)
+	public synchronized int getHighScore(int level, LEVELTYPE type)
 	{
 		return mSettings.getInt(HIGH_SCORE_KEY + String.valueOf(level), 0);
 	}
@@ -84,10 +94,19 @@ public class Preferences {
 		mEditor.commit();		
 	}
 	
-	public synchronized void saveHighScore(int newHighscore, int level)
+	// Type true = normal Level, false = Random Level
+	public synchronized void saveHighScore(int newHighscore, int level, LEVELTYPE type)
 	{
 		mHighScore = newHighscore;
-		mEditor.putInt(HIGH_SCORE_KEY + String.valueOf(level), mHighScore);
+		
+		if (type == LEVELTYPE.NORMAL)
+		{
+			mEditor.putInt(HIGH_SCORE_KEY + String.valueOf(level), mHighScore);
+		}
+		else
+		{
+			
+		}
 		mEditor.commit();
 	}
 	
@@ -106,5 +125,17 @@ public class Preferences {
 	{
 		mEditor.putInt(MAX_LEVEL, maxLevel);
 		mEditor.commit();
+	}
+	
+	public synchronized void increaseRandomLevelCount()
+	{
+		mRandomLevelCount++;
+		mEditor.putInt(RANDOM_LEVEL_COUNT, mRandomLevelCount);
+		mEditor.commit();
+	}
+	
+	public synchronized int getRandomLevelCount()
+	{
+		return mRandomLevelCount;
 	}
 }

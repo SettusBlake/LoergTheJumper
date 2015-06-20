@@ -34,14 +34,14 @@ public class LevelCompleteWindow extends Sprite
     	this.mScene = scene;
     	this.mCamera = camera;
     	this.mVbom = vbom;
-        attachStars();
+    	attachHeads();
     }
     
-    private void attachStars()
+    private void attachHeads()
     {
-        head1 = new TiledSprite(150, 150, ResourcesManager.getInstance().complete_stars_region, mVbom);
-        head2 = new TiledSprite(325, 150, ResourcesManager.getInstance().complete_stars_region, mVbom);
-        head3 = new TiledSprite(500, 150, ResourcesManager.getInstance().complete_stars_region, mVbom);
+        head1 = new TiledSprite(150, 150, ResourcesManager.getInstance().complete_loergs_region, mVbom);
+        head2 = new TiledSprite(325, 150, ResourcesManager.getInstance().complete_loergs_region, mVbom);
+        head3 = new TiledSprite(500, 150, ResourcesManager.getInstance().complete_loergs_region, mVbom);
         
         attachChild(head1);
         attachChild(head2);
@@ -95,7 +95,9 @@ public class LevelCompleteWindow extends Sprite
 		if(pSceneTouchEvent.isActionDown()){
 			if (Preferences.getInstance().getCurr_level() < Preferences.getInstance().getMaxLevel())
 			{
+				setVisible(false);
 				SceneManager.getInstance().loadYesNoMenuScene(ResourcesManager.getInstance().engine);
+				ResourcesManager.getInstance().resetCamera();
 			}
 			else
 			{
