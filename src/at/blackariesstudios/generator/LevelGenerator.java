@@ -130,7 +130,7 @@ public class LevelGenerator {
 					direction_y = 1;
 				}
 				
-				// Position in der Y Achse
+				// Position der Plattform
 				switch (direction_y) {
 				case 1: // up
 					akt_y += randInt(0, PlATFORM_Y_MAX_DISTANCE_UP);
@@ -149,7 +149,7 @@ public class LevelGenerator {
 				serializer.attribute("", "x", String.valueOf(akt_x));
 				serializer.attribute("", "y", String.valueOf(akt_y));
 
-				// Plattformen 
+				// Plattform Typ bestimmen
 				plat_akt = randInt(1,3);
 				switch (plat_akt) {
 				case 1: // normale
@@ -190,9 +190,10 @@ public class LevelGenerator {
 					break;
 				}
 				
+				// End Tag für die Platform
 				serializer.endTag("", "entity");
 				
-				// Münze oder nicht Münze, dass ist hier die Frage - 1/3 Chance
+				// Münze oder nicht Münze, dass ist hier die Frage
 				switch(randInt(1, 5))
 				{
 				case 1:

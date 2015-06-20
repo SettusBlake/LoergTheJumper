@@ -15,6 +15,7 @@ public class Preferences {
 	private static final String HIGH_SCORE_KEY = "highScore"; // höchster Highscore
 	private static final String MAX_LEVEL = "maxLevel";
 	private static final String RANDOM_LEVEL_COUNT = "randomLevelCount";
+	private static final String MAX_RANDOM_LEVEL = "maxRandomLevel";
 	
 	// SharedPreferences Objekt und der Editior zum bearbeiten (speichern/laden)
 	private SharedPreferences mSettings;
@@ -25,6 +26,7 @@ public class Preferences {
 	private int mHighScore;
 	private int mMaxLevel;
 	private int mRandomLevelCount;
+	private int mMaxRandomLevel;
 	
 	// Temporärer Speicherer während das Spiel läuft
 	private int curr_level;
@@ -66,6 +68,9 @@ public class Preferences {
 			
 			// Random level Count
 			mRandomLevelCount = mSettings.getInt(RANDOM_LEVEL_COUNT, 0);
+			
+			// Max Random Level
+			mMaxRandomLevel = mSettings.getInt(MAX_RANDOM_LEVEL, 20);
 		}
 	}
 	
@@ -94,7 +99,7 @@ public class Preferences {
 		mEditor.commit();		
 	}
 	
-	// Type true = normal Level, false = Random Level
+	// Type Random Level oder Normales Level
 	public synchronized void saveHighScore(int newHighscore, int level, LEVELTYPE type)
 	{
 		mHighScore = newHighscore;
@@ -105,9 +110,16 @@ public class Preferences {
 		}
 		else
 		{
-			
+			mHighScore = mSettings.getInt(HIGH_SCORE_KEY+"RE", 0);
+			mHighScore += newHighscore;
+			mEditor.putInt(HIGH_SCORE_KEY+"RE", mHighScore);
 		}
 		mEditor.commit();
+	}
+	
+	public synchronized int getRandomEndlessLevelHighScore()
+	{
+		return mSettings.getInt(HIGH_SCORE_KEY+"RE", 0);
 	}
 	
 	public synchronized void resetLevel()
@@ -119,6 +131,11 @@ public class Preferences {
 	public synchronized int getMaxLevel()
 	{
 		return mMaxLevel;
+	}
+	
+	public synchronized int getRandomMaxLevel()
+	{
+		return mMaxRandomLevel;
 	}
 	
 	public synchronized void setMaxLevel(int maxLevel)
