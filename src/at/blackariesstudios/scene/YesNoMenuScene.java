@@ -11,10 +11,12 @@ import org.andengine.entity.text.Text;
 import org.andengine.opengl.util.GLState;
 
 import at.blackariesstudios.base.BaseScene;
+import at.blackariesstudios.generator.LevelGenerator;
 import at.blackariesstudios.manager.ResourcesManager;
 import at.blackariesstudios.manager.SceneManager;
 import at.blackariesstudios.manager.SceneManager.SceneType;
 import at.blackariesstudios.preferences.Preferences;
+import at.blackariesstudios.preferences.Preferences.LEVELTYPE;
 
 public class YesNoMenuScene extends BaseScene implements IOnMenuItemClickListener {
 
@@ -102,9 +104,20 @@ public class YesNoMenuScene extends BaseScene implements IOnMenuItemClickListene
         {
         case MENU_OK:
         	//Game Scene mit korrekten Level laden
-            SceneManager.getInstance().loadGameScene(engine, Preferences.getInstance().getCurr_level()+1);
+        	if (Preferences.getInstance().getLevelType() == LEVELTYPE.NORMAL)
+        	{
+        		SceneManager.getInstance().loadGameScene(engine, Preferences.getInstance().getCurrentLevel()+1, LEVELTYPE.NORMAL);
+        	}
+        	else
+        	{
+        		LevelGenerator lvlg = new LevelGenerator();
+        		lvlg.generate();
+        		SceneManager.getInstance().loadGameScene(engine, 0, LEVELTYPE.RANDOM);
+        	}
         	return true;
         case MENU_NOT_OK:
+        	Preferences.getInstance().setLastScore(0);
+        	Preferences.getInstance().setCurrentLevel(1);
         	SceneManager.getInstance().loadMenuScene(engine);
             return true;
         default:

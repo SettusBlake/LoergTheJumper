@@ -71,7 +71,7 @@ public abstract class Player extends AnimatedSprite{
             
         final long[] PLAYER_ANIMATE = new long[] { 200, 200 };
         // original: final long[] PLAYER_ANIMATE = new long[] { 100, 100, 100 };
-
+        
         animate(PLAYER_ANIMATE, 0, 1, true); // 0 und 0  heiﬂt: vom 0ten zum 0ten tile. ich hab in dem fall nur einen
     }
     
@@ -86,7 +86,7 @@ public abstract class Player extends AnimatedSprite{
     	if (footContacts < 1)
     	{
     		return;
-    	}
+    	}	
         body.setLinearVelocity(new Vector2(body.getLinearVelocity().x, 11)); 
     }
     

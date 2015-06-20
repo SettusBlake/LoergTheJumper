@@ -6,6 +6,7 @@ import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
 
 import at.blackariesstudios.base.BaseScene;
+import at.blackariesstudios.preferences.Preferences.LEVELTYPE;
 import at.blackariesstudios.scene.GameScene;
 import at.blackariesstudios.scene.LoadingScene;
 import at.blackariesstudios.scene.MainMenuScene;
@@ -116,7 +117,7 @@ public class SceneManager
     	loadingScene = new LoadingScene();
     }
     
-    public void loadGameScene(final Engine mEngine, final int level)
+    public void loadGameScene(final Engine mEngine, final int level, final LEVELTYPE type)
     {
     	if (this.loadingScene == null)
     	{
@@ -137,8 +138,8 @@ public class SceneManager
             {
                 mEngine.unregisterUpdateHandler(pTimerHandler);
                 ResourcesManager.getInstance().loadGameResources();
-                gameScene = new GameScene();
-                ((GameScene) gameScene).loadLevel(level);
+                gameScene = new GameScene(level, type);
+                ((GameScene) gameScene).loadLevel();
                 setScene(gameScene);
             }
         }));

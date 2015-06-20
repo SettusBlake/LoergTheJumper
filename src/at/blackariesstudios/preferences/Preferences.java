@@ -2,6 +2,7 @@ package at.blackariesstudios.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Environment;
 
 public class Preferences {
 
@@ -16,6 +17,7 @@ public class Preferences {
 	private static final String MAX_LEVEL = "maxLevel";
 	private static final String RANDOM_LEVEL_COUNT = "randomLevelCount";
 	private static final String MAX_RANDOM_LEVEL = "maxRandomLevel";
+	private static final String RANDOM_LEVEL_PATH = "randomLevelPath";
 	
 	// SharedPreferences Objekt und der Editior zum bearbeiten (speichern/laden)
 	private SharedPreferences mSettings;
@@ -27,9 +29,12 @@ public class Preferences {
 	private int mMaxLevel;
 	private int mRandomLevelCount;
 	private int mMaxRandomLevel;
+	private String mRandomLevelPath;
 	
 	// Temporärer Speicherer während das Spiel läuft
-	private int curr_level;
+	private int mCurrentLevel;
+	private LEVELTYPE mLevelType;
+	private int mLastScore;
 	
 	public enum LEVELTYPE
     {
@@ -71,15 +76,18 @@ public class Preferences {
 			
 			// Max Random Level
 			mMaxRandomLevel = mSettings.getInt(MAX_RANDOM_LEVEL, 20);
+			
+			// Random Level Path - es fehlt danach nur noch das Level und .xml
+			mRandomLevelPath = mSettings.getString(RANDOM_LEVEL_PATH, Environment.getExternalStorageDirectory()+"/atblackariesstudios/randomlevel/r");
 		}
 	}
 	
-	public int getCurr_level() {
-		return curr_level;
+	public int getCurrentLevel() {
+		return mCurrentLevel;
 	}
 
-	public void setCurr_level(int curr_level) {
-		this.curr_level = curr_level;
+	public void setCurrentLevel(int curr_level) {
+		this.mCurrentLevel = curr_level;
 	}
 
 	public synchronized int getUnlockedLevelsCount()
@@ -89,7 +97,14 @@ public class Preferences {
 	
 	public synchronized int getHighScore(int level, LEVELTYPE type)
 	{
-		return mSettings.getInt(HIGH_SCORE_KEY + String.valueOf(level), 0);
+		if (type == LEVELTYPE.NORMAL)
+		{
+			return mSettings.getInt(HIGH_SCORE_KEY + String.valueOf(level), 0);
+		}
+		else
+		{
+			return mSettings.getInt(HIGH_SCORE_KEY + "RLE", 0);
+		}
 	}
 	
 	public synchronized void unlockNextLevel()
@@ -100,6 +115,9 @@ public class Preferences {
 	}
 	
 	// Type Random Level oder Normales Level
+	// Bei Random Level ist der übergabeParameter des Levels aktuell noch nicht wichtig
+	// Sollte später aber so gehandhabt werden:
+	// 0 = EndlessRandomlevel und >1 ist dann mit level abspeichern..bis max mMaxRandomLevel
 	public synchronized void saveHighScore(int newHighscore, int level, LEVELTYPE type)
 	{
 		mHighScore = newHighscore;
@@ -110,9 +128,9 @@ public class Preferences {
 		}
 		else
 		{
-			mHighScore = mSettings.getInt(HIGH_SCORE_KEY+"RE", 0);
+			mHighScore = mSettings.getInt(HIGH_SCORE_KEY+"RLE", 0);
 			mHighScore += newHighscore;
-			mEditor.putInt(HIGH_SCORE_KEY+"RE", mHighScore);
+			mEditor.putInt(HIGH_SCORE_KEY+"RLE", mHighScore);
 		}
 		mEditor.commit();
 	}
@@ -154,5 +172,26 @@ public class Preferences {
 	public synchronized int getRandomLevelCount()
 	{
 		return mRandomLevelCount;
+	}
+	
+	public synchronized String getRandomLevelPath()
+	{
+		return mRandomLevelPath;
+	}
+
+	public LEVELTYPE getLevelType() {
+		return mLevelType;
+	}
+
+	public void setLevelType(LEVELTYPE type) {
+		this.mLevelType = type;
+	}
+
+	public int getLastScore() {
+		return mLastScore;
+	}
+	
+	public void setLastScore(int lastScore) {
+			this.mLastScore = lastScore;
 	}
 }

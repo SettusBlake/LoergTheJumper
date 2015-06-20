@@ -32,6 +32,7 @@ import org.xml.sax.Attributes;
 import at.blackariesstudios.base.BaseScene;
 import at.blackariesstudios.extras.LevelCompleteWindow;
 import at.blackariesstudios.extras.LevelCompleteWindow.LoergEndCount;
+import at.blackariesstudios.generator.LevelGenerator;
 import at.blackariesstudios.manager.ResourcesManager;
 import at.blackariesstudios.manager.SceneManager;
 import at.blackariesstudios.manager.SceneManager.SceneType;
@@ -71,8 +72,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	private Text levelText;
 	private Text highScoreText;
 	private int score = 0;
-	private int level = 1;
+	private int oldRLHighScore = 0;
+	private int levelID = 1;
 	private int coincount = 0;
+	LEVELTYPE levelType;
 
 	private PhysicsWorld physicsWorld;
 	
@@ -81,16 +84,20 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	private boolean gameOverDisplayed = false;
 	private boolean gameWon = false;
 	
+	private Preferences prefs;
+	
 	private LevelCompleteWindow levelCompleteWindow;
 
 	public GameScene()
 	{
 	}
 	
-	public GameScene(int level)
+	public GameScene(int level, LEVELTYPE type)
 	{
-		this.level = level;
-		this.loadLevel(this.level);
+		prefs = Preferences.getInstance();
+		this.levelID = level;
+		this.levelType = type;
+		prefs.setLevelType(type);
 	}
 	
 	@Override
@@ -117,6 +124,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 		detachChildren();
         SceneManager.getInstance().loadMenuScene(engine);
         ResourcesManager.getInstance().resetCamera();
+        prefs.setCurrentLevel(1);
+        prefs.setLastScore(0);
 	}
 
 	@Override
@@ -143,10 +152,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 		Sprite front = new Sprite(width * 0.5f, textureHeight *
 				0.5f, resourcesManager.game_background_region_front,
 				engine.getVertexBufferObjectManager());
-		
-//		Sprite front = new Sprite(width, resourcesManager.game_background_region_front, resourcesManager.game_background_region_front,
-//		engine.getVertexBufferObjectManager());
-
 
 		// Float werte sind für den standard rgp wert - hintergrundfarbe
 		ParallaxBackground background = new ParallaxBackground(0.3f, 0.3f, 0.3f) {
@@ -213,7 +218,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 		levelText.setText("LVL " + String.valueOf(lvl));
 	}
 	
-	public void loadLevel(int levelID)
+	public void loadLevel()
 	{
 	    final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);
 	    
@@ -224,10 +229,27 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	    	levelID = 1;
 	    }
 	    
-	    setLevelText(levelID);
-	    this.level = levelID;
-	    Preferences.getInstance().setCurr_level(levelID);
-	    highScoreText.setText("Highscore " + String.valueOf(Preferences.getInstance().getHighScore(levelID, LEVELTYPE.NORMAL)));
+	    
+	    if (levelType == LEVELTYPE.NORMAL)
+	    {
+		    setLevelText(levelID);
+		    prefs.setCurrentLevel(levelID);
+		    highScoreText.setText("Highscore " + String.valueOf(prefs.getHighScore(levelID, LEVELTYPE.NORMAL)));
+	    }
+	    else
+	    {
+	    	// Damit der fortlaufenden Score behalten/angezeigt wird
+	    	int currLevel = prefs.getCurrentLevel();
+	    	setLevelText(currLevel);
+	    	if (currLevel >= 1)
+	    	{
+	    		int lastScore = prefs.getLastScore();
+	    		scoreText.setText("Score " + String.valueOf(lastScore));
+	    		score = lastScore;
+	    	}
+			oldRLHighScore = prefs.getHighScore(0, LEVELTYPE.RANDOM);
+			highScoreText.setText("Highscore " + String.valueOf(oldRLHighScore));
+	    }
 	    
 	    //Mutter Entity
 	    levelLoader.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(LevelConstants.TAG_LEVEL)
@@ -322,7 +344,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	                        {                   	
 	        	                if (!gameWon)
 	        	                {
-	        	                	Preferences.getInstance().saveHighScore(score, level, LEVELTYPE.NORMAL);
+	        	                	prefs.saveHighScore(score, levelID, LEVELTYPE.NORMAL);
 	        	                	score /= 10;
 	        	                	if (score >= (coincount/3)*2)
 	        	                	{
@@ -346,6 +368,14 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	        	                	GameScene.this.registerTouchArea(levelCompleteWindow);
 	        	            	    player.stopAnimation();
 	        	            	    player.setVisible(false);
+	        	            	    if (levelType == LEVELTYPE.RANDOM)
+	        	            	    {
+	        	            	    	if (oldRLHighScore < (score*10))
+	        	            	    	{
+	        	            	    		prefs.saveHighScore(score*10, 0, levelType);
+	        	            	    	}
+	        	            	    	prefs.setLastScore(score*10);
+	        	            	    }
 	        	                }
 	                            this.setIgnoreUpdate(true); // Münze wird vom UpdateHandler nicht mehr berücksichtigt
 	                        }
@@ -362,7 +392,16 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	        }
 	    });
 
-	    levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID + ".xml");
+	    if (levelType == LEVELTYPE.NORMAL)
+	    {
+	    	levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID + ".xml");
+	    }
+	    else
+	    {
+	    	LevelGenerator lvlg = new LevelGenerator();
+	    	levelLoader.loadLevelFromStream(lvlg.getInputStream());
+	    }
+	    
 	}
 
 	@Override
@@ -409,12 +448,15 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	}
 	
 	private void levelIncrease() {
-		// Wenn das aktuelle Level-1 mit dem gespeicherten übereinstimmt, wird
-		// das nächste Level freigeschalten
-		
-		if ((Preferences.getInstance().getUnlockedLevelsCount() == level) && (level < Preferences.getInstance().getMaxLevel())) {
-			Preferences.getInstance().unlockNextLevel();
+		if (levelType == LEVELTYPE.NORMAL)
+		{
+			// Wenn das aktuelle Level-1 mit dem gespeicherten übereinstimmt, wird
+			// das nächste Level freigeschalten
+			if ((prefs.getUnlockedLevelsCount() == levelID) && (levelID < prefs.getMaxLevel())) {
+				prefs.unlockNextLevel();
+			}
 		}
+		prefs.setCurrentLevel(levelID+1);
 	}
 	
 	//It lets us to execute code while events such as contact begin/end between fixtures occurs.

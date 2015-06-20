@@ -52,6 +52,7 @@ public class ResourcesManager
     public ITextureRegion menu_background_region;
     public ITextureRegion play_region;
     public ITextureRegion levelSelector_region;
+    public ITextureRegion randomLevel_region;
         
     private BuildableBitmapTextureAtlas menuTextureAtlas;
     public ITiledTextureRegion player_region;
@@ -141,13 +142,14 @@ public class ResourcesManager
     	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/menu/");
     	
     	// Buildable Bitmap, damit wir uns nicht um die Position kümmern müssen
-    	menuTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
+    	menuTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1280, 1024, TextureOptions.BILINEAR);
     	menu_background_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "menu_background.png");
     	play_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "start.png");
     	levelSelector_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "level.png");
     	level_selector_tile_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "level_icon.png");
     	level_base_window_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "level_base_window.png");
     	level_close_button = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "close_button.png");
+    	randomLevel_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "button_random_endless.png");
     	       
     	try 
     	{
@@ -225,7 +227,7 @@ public class ResourcesManager
         complete_window_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "level_complete_window.png");
         complete_loergs_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "level_complete_tiled_loerg.png", 2, 1);
         
-        player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "LoergTiledSpriteVersuch_Klein.png", 2, 1);
+        player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "Loerg_tiled_sprite_klein.png", 2, 1);
        
         try 
         {

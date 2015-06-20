@@ -1,13 +1,16 @@
 package at.blackariesstudios.generator;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Random;
 
 import org.xmlpull.v1.XmlSerializer;
 
-import android.os.Environment;
 import android.util.Log;
 import android.util.Xml;
 import at.blackariesstudios.preferences.Preferences;
@@ -31,9 +34,7 @@ public class LevelGenerator {
 	private final static int MAX_LEVEL_WIDTH = 8000;
 	private final static int MIN_LEVEL_HEIGHT = PLATFORM_HEIGHT;
 	
-	private String filepath = "/atblackariesstudios/randomlevel/r";
-	
-	File newxmlFile;
+	File xmlFile;
 	XmlSerializer serializer;
 	int levelLength;
 	
@@ -45,10 +46,10 @@ public class LevelGenerator {
 			int lvl = Preferences.getInstance().getRandomLevelCount();
 			levelLength = randInt((int) (MAX_LEVEL_WIDTH*0.5), MAX_LEVEL_WIDTH);
 			
-			newxmlFile= new File(Environment.getExternalStorageDirectory()+ filepath + String.valueOf(1) + ".xml");   
-		    newxmlFile.getParentFile().mkdirs();
+			xmlFile= new File(Preferences.getInstance().getRandomLevelPath() + String.valueOf(0) + ".xml");   
+			xmlFile.getParentFile().mkdirs();
 		    
-			FileOutputStream fos = new FileOutputStream(newxmlFile);
+			FileOutputStream fos = new FileOutputStream(xmlFile);
 
 			serializer = Xml.newSerializer();
 			serializer.setOutput(fos, "UTF-8");
@@ -71,7 +72,6 @@ public class LevelGenerator {
 		} catch (Exception e) {
 			Log.e("Exception", "error occurred while creating xml file");
 		}
-
 	}
 	
 	private void generateEntities()
@@ -229,6 +229,21 @@ public class LevelGenerator {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public InputStream getInputStream()
+	{
+		InputStream is = null;                 
+		try {
+			xmlFile = new File(Preferences.getInstance().getRandomLevelPath() + String.valueOf(0) + ".xml");
+			xmlFile.getParentFile().mkdirs();
+			is = new BufferedInputStream(new FileInputStream(xmlFile));
+			return is;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return is;
 	}
 	
 	private static int randInt(int min, int max) {

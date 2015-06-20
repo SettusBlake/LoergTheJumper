@@ -12,6 +12,7 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import at.blackariesstudios.manager.ResourcesManager;
 import at.blackariesstudios.manager.SceneManager;
 import at.blackariesstudios.preferences.Preferences;
+import at.blackariesstudios.preferences.Preferences.LEVELTYPE;
 import at.blackariesstudios.scene.MainMenuScene;
 
 public class LevelSelectorWindow extends Sprite {
@@ -253,13 +254,7 @@ public class LevelSelectorWindow extends Sprite {
 						LevelSelectorWindow.this.scene.getBackground().setColor(
 								org.andengine.util.adt.color.Color.GREEN);
 						
-						
-						/**
-						 * Example level loading: LevelSelector.this.hide();
-						 * SceneManager.loadLevel(this.mLevelNumber);
-						 */
-						
-						SceneManager.getInstance().loadGameScene(engine, this.mLevelNumber);
+						SceneManager.getInstance().loadGameScene(engine, this.mLevelNumber, LEVELTYPE.NORMAL);
 					}
 					return true;
 				}
