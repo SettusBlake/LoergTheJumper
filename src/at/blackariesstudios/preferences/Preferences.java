@@ -129,7 +129,7 @@ public class Preferences {
 		else
 		{
 			mHighScore = mSettings.getInt(HIGH_SCORE_KEY+"RLE", 0);
-			mHighScore += newHighscore;
+			mHighScore = newHighscore;
 			mEditor.putInt(HIGH_SCORE_KEY+"RLE", mHighScore);
 		}
 		mEditor.commit();

@@ -146,11 +146,13 @@ public class LevelGenerator {
 				default:
 					break;
 				}
+				
 				serializer.attribute("", "x", String.valueOf(akt_x));
 				serializer.attribute("", "y", String.valueOf(akt_y));
 
 				// Plattform Typ bestimmen
 				plat_akt = randInt(1,3);
+								
 				switch (plat_akt) {
 				case 1: // normale
 					serializer.attribute("", "type", "platform1");
