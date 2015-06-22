@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<level
+    height="1000"
+    width="5605" >
+
+    <entity
+        type="platform1"
+        x="150"
+        y="393" />
+
+    <entity
+        type="player"
+        x="150"
+        y="423" />
+
+    <entity
+        type="platform1"
+        x="335"
+        y="393" />
+
+    <entity
+        type="coin"
+        x="335"
+        y="463" />
+
+    <entity
+        type="platform1"
+        x="586"
+        y="343" />
+
+    <entity
+        type="coin"
+        x="586"
+        y="413" />
+
+    <entity
+        type="platform3"
+        x="767"
+        y="343" />
+
+    <entity
+        type="platform3"
+        x="959"
+        y="264" />
+
+    <entity
+        type="coin"
+        x="959"
+        y="334" />
+
+    <entity
+        type="platform3"
+        x="1167"
+        y="264" />
+
+    <entity
+        type="platform3"
+        x="1350"
+        y="221" />
+
+    <entity
+        type="platform1"
+        x="1579"
+        y="260" />
+
+    <entity
+        type="platform3"
+        x="1882"
+        y="205" />
+
+    <entity
+        type="platform3"
+        x="2160"
+        y="274" />
+
+    <entity
+        type="coin"
+        x="2160"
+        y="344" />
+
+    <entity
+        type="platform3"
+        x="2362"
+        y="319" />
+
+    <entity
+        type="platform3"
+        x="2532"
+        y="262" />
+
+    <entity
+        type="platform1"
+        x="2779"
+        y="215" />
+
+    <entity
+        type="platform3"
+        x="2981"
+        y="126" />
+
+    <entity
+        type="platform3"
+        x="3295"
+        y="61" />
+
+    <entity
+        type="coin"
+        x="3295"
+        y="131" />
+
+    <entity
+        type="platform3"
+        x="3506"
+        y="107" />
+
+    <entity
+        type="platform3"
+        x="3714"
+        y="60" />
+
+    <entity
+        type="platform3"
+        x="3916"
+        y="91" />
+
+    <entity
+        type="platform3"
+        x="4178"
+        y="129" />
+
+    <entity
+        type="coin"
+        x="4178"
+        y="199" />
+
+    <entity
+        type="platform3"
+        x="4433"
+        y="129" />
+
+    <entity
+        type="platform3"
+        x="4646"
+        y="129" />
+
+    <entity
+        type="coin"
+        x="4646"
+        y="199" />
+
+    <entity
+        type="platform1"
+        x="4924"
+        y="171" />
+
+    <entity
+        type="coin"
+        x="4924"
+        y="241" />
+
+    <entity
+        type="platform1"
+        x="5223"
+        y="92" />
+
+    <entity
+        type="platform1"
+        x="5479"
+        y="92" />
+
+    <entity
+        type="goal"
+        x="5479"
+        y="142" />
+
+</level>
