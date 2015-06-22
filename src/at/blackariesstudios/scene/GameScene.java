@@ -14,6 +14,7 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.ParallaxBackground;
 import org.andengine.entity.scene.background.ParallaxBackground.ParallaxEntity;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.sprite.TiledSprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
@@ -76,6 +77,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	private int oldRLHighScore = 0;
 	private int levelID = 1;
 	private int coincount = 0;
+	
+	// Level Typ für verschiedene Operationen bei Random oder Normalen Leveln
 	LEVELTYPE levelType;
 
 	private PhysicsWorld physicsWorld;
@@ -108,7 +111,25 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	    createHUD();
 	    createPhysics();
 	    createGameOverText();
+	    createPauseButton();
 	    setOnSceneTouchListener(this);
+	}
+
+	private void createPauseButton() {
+		final TiledSprite pauseButton = new TiledSprite(50, 50, resourcesManager.pause_button_region, vbom) {
+	        @Override
+	        public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+	            if (pSceneTouchEvent.isActionDown()) {
+	            	physicsWorld.clearForces();
+	            	player.stopAnimation(0);
+	            	setCurrentTileIndex(1);
+	            }
+	            return true;
+	        }           
+	    };
+	    registerTouchArea(pauseButton);
+	    pauseButton.setCurrentTileIndex(0);
+		gameHUD.attachChild(pauseButton);
 	}
 
 	private void createPhysics()
