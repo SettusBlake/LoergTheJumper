@@ -69,7 +69,7 @@ public class Preferences {
 			mHighScore = mSettings.getInt(HIGH_SCORE_KEY, 0);
 			
 			// Max Level
-			mMaxLevel = mSettings.getInt(MAX_LEVEL, 10);
+			mMaxLevel = mSettings.getInt(MAX_LEVEL, 20);
 			
 			// Random level Count
 			mRandomLevelCount = mSettings.getInt(RANDOM_LEVEL_COUNT, 0);
@@ -99,11 +99,13 @@ public class Preferences {
 	{
 		if (type == LEVELTYPE.NORMAL)
 		{
-			return mSettings.getInt(HIGH_SCORE_KEY + String.valueOf(level), 0);
+			int temp = mSettings.getInt(HIGH_SCORE_KEY + String.valueOf(level), 0);
+			return temp;
 		}
-		else
+		else 
 		{
-			return mSettings.getInt(HIGH_SCORE_KEY + "RLE", 0);
+			int temp = mSettings.getInt(HIGH_SCORE_KEY + "RLE", 0);
+			return temp;
 		}
 	}
 	
@@ -119,25 +121,24 @@ public class Preferences {
 	// Sollte später aber so gehandhabt werden:
 	// 0 = EndlessRandomlevel und >1 ist dann mit level abspeichern..bis max mMaxRandomLevel
 	public synchronized void saveHighScore(int newHighscore, int level, LEVELTYPE type)
-	{
+	{		
 		mHighScore = newHighscore;
-		
 		if (type == LEVELTYPE.NORMAL)
 		{
 			mEditor.putInt(HIGH_SCORE_KEY + String.valueOf(level), mHighScore);
 		}
 		else
 		{
-			mHighScore = mSettings.getInt(HIGH_SCORE_KEY+"RLE", 0);
-			mHighScore = newHighscore;
+			//mHighScore = mSettings.getInt(HIGH_SCORE_KEY+"RLE", 0);
 			mEditor.putInt(HIGH_SCORE_KEY+"RLE", mHighScore);
 		}
 		mEditor.commit();
+		
 	}
 	
 	public synchronized int getRandomEndlessLevelHighScore()
 	{
-		return mSettings.getInt(HIGH_SCORE_KEY+"RE", 0);
+		return mSettings.getInt(HIGH_SCORE_KEY+"RLE", 0);
 	}
 	
 	public synchronized void resetLevel()

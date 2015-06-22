@@ -29,6 +29,7 @@ import org.andengine.util.level.simple.SimpleLevelEntityLoaderData;
 import org.andengine.util.level.simple.SimpleLevelLoader;
 import org.xml.sax.Attributes;
 
+import android.R;
 import at.blackariesstudios.base.BaseScene;
 import at.blackariesstudios.extras.LevelCompleteWindow;
 import at.blackariesstudios.extras.LevelCompleteWindow.LoergEndCount;
@@ -228,8 +229,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	    {
 	    	levelID = 1;
 	    }
-	    
-	    
+
 	    if (levelType == LEVELTYPE.NORMAL)
 	    {
 		    setLevelText(levelID);
@@ -344,7 +344,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	                        {                   	
 	        	                if (!gameWon)
 	        	                {
-	        	                	prefs.saveHighScore(score, levelID, LEVELTYPE.NORMAL);
 	        	                	score /= 10;
 	        	                	if (score >= (coincount/3)*2)
 	        	                	{
@@ -375,6 +374,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	        	            	    		prefs.saveHighScore(score*10, 0, levelType);
 	        	            	    	}
 	        	            	    	prefs.setLastScore(score*10);
+	        	            	    }
+	        	            	    else
+	        	            	    {
+	        	            	    	prefs.saveHighScore(score*10, levelID, LEVELTYPE.NORMAL);
 	        	            	    }
 	        	                }
 	                            this.setIgnoreUpdate(true); // Münze wird vom UpdateHandler nicht mehr berücksichtigt
@@ -417,6 +420,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	        {
 	            player.jump();
 	        }
+	        
+	        if (gameOverDisplayed == true)
+	        {
+	        	onBackKeyPressed();
+	        }
 	    }
 	    return false;
 	}
@@ -455,8 +463,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 			if ((prefs.getUnlockedLevelsCount() == levelID) && (levelID < prefs.getMaxLevel())) {
 				prefs.unlockNextLevel();
 			}
+			prefs.setCurrentLevel(levelID);
 		}
-		prefs.setCurrentLevel(levelID+1);
+		else
+		{
+			prefs.setCurrentLevel(levelID+1);
+		}
+		
 	}
 	
 	//It lets us to execute code while events such as contact begin/end between fixtures occurs.
