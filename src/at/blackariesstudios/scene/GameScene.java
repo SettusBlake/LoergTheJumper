@@ -125,7 +125,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	            if (pSceneTouchEvent.isActionDown()) {
 	            	if (isPaused == false)
 	            	{
-		        		setIgnoreUpdate(true);
+		        		//setIgnoreUpdate(true);
 		        		player.stopRunning();
 		        	    setCurrentTileIndex(1);
 		        	    physicsWorld.setGravity(new Vector2(0,0));
@@ -133,7 +133,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	            	}
 	            	else
 	            	{
-	            		setIgnoreUpdate(false);
+	            		//setIgnoreUpdate(false);
 		            	player.setRunning();
 		            	setCurrentTileIndex(0);
 		            	physicsWorld.setGravity(new Vector2(0, -17));
@@ -455,7 +455,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	        }
 	        else
 	        {
-	            player.jump();
+	            player.jump(isPaused);
 	        }
 	        
 	        if (gameOverDisplayed == true)
@@ -515,6 +515,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	{
 		ContactListener contactListener = new ContactListener() {
 			public void beginContact(Contact contact) {
+				
 				final Fixture x1 = contact.getFixtureA();
 				final Fixture x2 = contact.getFixtureB();
 

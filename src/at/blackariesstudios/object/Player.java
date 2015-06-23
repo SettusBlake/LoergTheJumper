@@ -81,20 +81,17 @@ public abstract class Player extends AnimatedSprite{
         canRun = false;
         stopAnimation();
         body.setLinearVelocity(0, 0);
-        body.setActive(false);
-        if (footContacts == 1)
-        {
-        	footContacts = 0;
-        }
+        //body.setActive(false);
+        
     }
     
-    public void jump()
+    public void jump(boolean pause)
     {
-    	if (footContacts < 1)
+    	if (footContacts >= 1 && pause == false)
     	{
+    		body.setLinearVelocity(new Vector2(body.getLinearVelocity().x, 11));
     		return;
-    	}	
-        body.setLinearVelocity(new Vector2(body.getLinearVelocity().x, 11)); 
+    	}
     }
     
     public void increaseFootContacts()
@@ -105,6 +102,12 @@ public abstract class Player extends AnimatedSprite{
     public void decreaseFootContacts()
     {
         footContacts--;
+    }
+    
+    public int getFootContacts()
+    {
+    	
+    	return footContacts;
     }
     
 }
