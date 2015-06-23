@@ -16,6 +16,7 @@ import android.view.KeyEvent;
 import at.blackariesstudios.generator.LevelGenerator;
 import at.blackariesstudios.manager.ResourcesManager;
 import at.blackariesstudios.manager.SceneManager;
+import at.blackariesstudios.manager.SceneManager.SceneType;
 import at.blackariesstudios.preferences.Preferences;
 
 public class GameActivity extends BaseGameActivity{
@@ -101,6 +102,7 @@ public class GameActivity extends BaseGameActivity{
 	    {
 	        SceneManager.getInstance().getCurrentScene().onBackKeyPressed();
 	    }
-	    return false; 
+	    return false;    
+
 	}
 }

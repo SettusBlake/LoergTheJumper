@@ -22,6 +22,8 @@ public abstract class Player extends AnimatedSprite{
 	private Body body;
 	private boolean canRun = false;
 	private int footContacts = 0;
+	
+	final long[] PLAYER_ANIMATE = new long[] { 200, 200 };
 
     // ---------------------------------------------
     // CONSTRUCTOR
@@ -68,17 +70,22 @@ public abstract class Player extends AnimatedSprite{
     public void setRunning()
     {
         canRun = true;
-            
-        final long[] PLAYER_ANIMATE = new long[] { 200, 200 };
         // original: final long[] PLAYER_ANIMATE = new long[] { 100, 100, 100 };
         
         animate(PLAYER_ANIMATE, 0, 1, true); // 0 und 0  heiﬂt: vom 0ten zum 0ten tile. ich hab in dem fall nur einen
+        body.setActive(true);
     }
     
     public void stopRunning()
     {
         canRun = false;
+        stopAnimation();
         body.setLinearVelocity(0, 0);
+        body.setActive(false);
+        if (footContacts == 1)
+        {
+        	footContacts = 0;
+        }
     }
     
     public void jump()

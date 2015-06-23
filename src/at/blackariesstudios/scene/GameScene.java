@@ -31,6 +31,7 @@ import org.andengine.util.level.simple.SimpleLevelLoader;
 import org.xml.sax.Attributes;
 
 import android.R;
+import android.view.KeyEvent;
 import at.blackariesstudios.base.BaseScene;
 import at.blackariesstudios.extras.LevelCompleteWindow;
 import at.blackariesstudios.extras.LevelCompleteWindow.LoergEndCount;
@@ -87,6 +88,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	private Text gameWonText;
 	private boolean gameOverDisplayed = false;
 	private boolean gameWon = false;
+	private boolean isPaused = false;
 	
 	private Preferences prefs;
 	
@@ -114,21 +116,35 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	    createPauseButton();
 	    setOnSceneTouchListener(this);
 	}
-
+	
 	private void createPauseButton() {
-		final TiledSprite pauseButton = new TiledSprite(50, 50, resourcesManager.pause_button_region, vbom) {
+		final TiledSprite pauseButton = new TiledSprite(resourcesManager.camera.getWidth()-50, resourcesManager.camera.getHeight()-50, resourcesManager.pause_button_region, vbom)
+		{
 	        @Override
 	        public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
 	            if (pSceneTouchEvent.isActionDown()) {
-	            	physicsWorld.clearForces();
-	            	player.stopAnimation(0);
-	            	setCurrentTileIndex(1);
+	            	if (isPaused == false)
+	            	{
+		        		setIgnoreUpdate(true);
+		        		player.stopRunning();
+		        	    setCurrentTileIndex(1);
+		        	    physicsWorld.setGravity(new Vector2(0,0));
+		        		isPaused = true;
+	            	}
+	            	else
+	            	{
+	            		setIgnoreUpdate(false);
+		            	player.setRunning();
+		            	setCurrentTileIndex(0);
+		            	physicsWorld.setGravity(new Vector2(0, -17));
+		            	isPaused = false;
+	            	}
 	            }
 	            return true;
 	        }           
 	    };
-	    registerTouchArea(pauseButton);
-	    pauseButton.setCurrentTileIndex(0);
+	    gameHUD.registerTouchArea(pauseButton);
+	    gameHUD.setTouchAreaBindingOnActionDownEnabled(true);
 		gameHUD.attachChild(pauseButton);
 	}
 
@@ -213,7 +229,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	 // CREATE SCORE TEXT
 	    highScoreText = new Text(15, y, resourcesManager.game_font, "Highscore 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
 	    scoreText = new Text(15, y-40, resourcesManager.game_font, "Score 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
-	    levelText = new Text(x, y, resourcesManager.game_font, "LVL 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
+	    levelText = new Text(x-40, y, resourcesManager.game_font, "LVL 0123456789", new TextOptions(HorizontalAlign.LEFT), vbom);
 	    
 	    scoreText.setAnchorCenter(0, 0);
 	    levelText.setAnchorCenter(0, 0);
@@ -497,18 +513,16 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	//We can recognise fixtures/bodies by setting their user data as we did for example for players body by settings its user data to "player".
 	private ContactListener contactListener()
 	{
-	    ContactListener contactListener = new ContactListener()
-	    {
-	        public void beginContact(Contact contact)
-	        {
-	            final Fixture x1 = contact.getFixtureA();
-	            final Fixture x2 = contact.getFixtureB();
+		ContactListener contactListener = new ContactListener() {
+			public void beginContact(Contact contact) {
+				final Fixture x1 = contact.getFixtureA();
+				final Fixture x2 = contact.getFixtureB();
 
-	            if (x1.getBody().getUserData() != null && x2.getBody().getUserData() != null)
-	            {
+				if (x1.getBody().getUserData() != null
+						&& x2.getBody().getUserData() != null) {
 					if (x1.getBody().getUserData().equals("platform3")
 							&& x2.getBody().getUserData().equals("player")) {
-						engine.registerUpdateHandler(new TimerHandler(0.25f,
+						engine.registerUpdateHandler(new TimerHandler(0.3f,
 								new ITimerCallback() {
 									public void onTimePassed(
 											final TimerHandler pTimerHandler) {
@@ -519,10 +533,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 									}
 								}));
 					}
-					
+
 					if (x2.getBody().getUserData().equals("platform3")
 							&& x1.getBody().getUserData().equals("player")) {
-						engine.registerUpdateHandler(new TimerHandler(0.25f,
+						engine.registerUpdateHandler(new TimerHandler(0.3f,
 								new ITimerCallback() {
 									public void onTimePassed(
 											final TimerHandler pTimerHandler) {
@@ -533,54 +547,56 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 									}
 								}));
 					}
-					
-	                if (x1.getBody().getUserData().equals("platform2") && x2.getBody().getUserData().equals("player"))
-	                {
-	                    engine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback()
-	                    {                                    
-	                        public void onTimePassed(final TimerHandler pTimerHandler)
-	                        {
-	                            pTimerHandler.reset();
-	                            engine.unregisterUpdateHandler(pTimerHandler);
-	                            x1.getBody().setType(BodyType.DynamicBody);
-	                        }
-	                    }));
-	                } 
-	                
-	                if (x2.getBody().getUserData().equals("platform2") && x1.getBody().getUserData().equals("player"))
-	                {
-	                    engine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback()
-	                    {                                    
-	                        public void onTimePassed(final TimerHandler pTimerHandler)
-	                        {
-	                            pTimerHandler.reset();
-	                            engine.unregisterUpdateHandler(pTimerHandler);
-	                            x2.getBody().setType(BodyType.DynamicBody);
-	                        }
-	                    }));
-	                } 
-	                
-	                if (x2.getBody().getUserData().equals("player") || x1.getBody().getUserData().equals("player"))
-	                {
-	                    player.increaseFootContacts();
-	                }
-	            }
-	        }
+
+					if (x1.getBody().getUserData().equals("platform2")
+							&& x2.getBody().getUserData().equals("player")) {
+						engine.registerUpdateHandler(new TimerHandler(0.1f,
+								new ITimerCallback() {
+									public void onTimePassed(
+											final TimerHandler pTimerHandler) {
+										pTimerHandler.reset();
+										engine.unregisterUpdateHandler(pTimerHandler);
+										x1.getBody().setType(
+												BodyType.DynamicBody);
+									}
+								}));
+					}
+
+					if (x2.getBody().getUserData().equals("platform2")
+							&& x1.getBody().getUserData().equals("player")) {
+						engine.registerUpdateHandler(new TimerHandler(0.1f,
+								new ITimerCallback() {
+									public void onTimePassed(
+											final TimerHandler pTimerHandler) {
+										pTimerHandler.reset();
+										engine.unregisterUpdateHandler(pTimerHandler);
+										x2.getBody().setType(
+												BodyType.DynamicBody);
+									}
+								}));
+					}
+
+					if (x2.getBody().getUserData().equals("player")
+							|| x1.getBody().getUserData().equals("player")) {
+						player.increaseFootContacts();
+					}
+				}
+
+			}
 
 	        // wenn der kontakt nicht mehr besteht
 	        public void endContact(Contact contact)
 	        {
 	            final Fixture x1 = contact.getFixtureA();
-	            final Fixture x2 = contact.getFixtureB();
+				final Fixture x2 = contact.getFixtureB();
 
-	            if (x1.getBody().getUserData() != null && x2.getBody().getUserData() != null)
-	            {
-	                if (x2.getBody().getUserData().equals("player") || x1.getBody().getUserData().equals("player"))
-	                {
-	                    player.decreaseFootContacts();
-	                }
-	            }
-
+				if (x1.getBody().getUserData() != null
+						&& x2.getBody().getUserData() != null) {
+					if (x2.getBody().getUserData().equals("player")
+							|| x1.getBody().getUserData().equals("player")) {
+						player.decreaseFootContacts();
+					}
+				}
 	        }
 
 	        public void preSolve(Contact contact, Manifold oldManifold)

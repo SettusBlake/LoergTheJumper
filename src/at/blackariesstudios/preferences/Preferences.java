@@ -67,8 +67,9 @@ public class Preferences {
 			
 			// Highscore: init = 0
 			mHighScore = mSettings.getInt(HIGH_SCORE_KEY, 0);
-			
+
 			// Max Level
+			mEditor.putInt(MAX_LEVEL, 20);
 			mMaxLevel = mSettings.getInt(MAX_LEVEL, 20);
 			
 			// Random level Count
@@ -79,6 +80,7 @@ public class Preferences {
 			
 			// Random Level Path - es fehlt danach nur noch das Level und .xml
 			mRandomLevelPath = mSettings.getString(RANDOM_LEVEL_PATH, Environment.getExternalStorageDirectory()+"/atblackariesstudios/randomlevel/r");
+			mEditor.commit();
 		}
 	}
 	
