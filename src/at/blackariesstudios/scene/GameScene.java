@@ -85,7 +85,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	private PhysicsWorld physicsWorld;
 	
 	private Text gameOverText;
-	private Text gameWonText;
+	private Text gamePausedText;
 	private boolean gameOverDisplayed = false;
 	private boolean gameWon = false;
 	private boolean isPaused = false;
@@ -112,7 +112,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	    createBackground();
 	    createHUD();
 	    createPhysics();
-	    createGameOverText();
+	    createDisplayText();
 	    createPauseButton();
 	    setOnSceneTouchListener(this);
 	}
@@ -123,21 +123,24 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	        @Override
 	        public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
 	            if (pSceneTouchEvent.isActionDown()) {
-	            	if (isPaused == false)
+	            	if (firstTouch == true)
 	            	{
-		        		//setIgnoreUpdate(true);
-		        		player.stopRunning();
-		        	    setCurrentTileIndex(1);
-		        	    physicsWorld.setGravity(new Vector2(0,0));
-		        		isPaused = true;
-	            	}
-	            	else
-	            	{
-	            		//setIgnoreUpdate(false);
-		            	player.setRunning();
-		            	setCurrentTileIndex(0);
-		            	physicsWorld.setGravity(new Vector2(0, -17));
-		            	isPaused = false;
+		            	if (isPaused == false)
+		            	{
+			        		player.stopRunning();
+			        	    setCurrentTileIndex(1);
+			        	    physicsWorld.setGravity(new Vector2(0,0));
+			        	    setPauseText(true);
+			        		isPaused = true;
+		            	}
+		            	else
+		            	{
+			            	player.setRunning();
+			            	setCurrentTileIndex(0);
+			            	physicsWorld.setGravity(new Vector2(0, -17));
+			            	setPauseText(false);
+			            	isPaused = false;
+		            	}
 	            	}
 	            }
 	            return true;
@@ -254,6 +257,35 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	private void setLevelText(int lvl)
 	{
 		levelText.setText("LVL " + String.valueOf(lvl));
+	}
+	
+	private void createDisplayText()
+	{
+	    gameOverText = new Text(0, 0, resourcesManager.game_font, "Game Over!", vbom);
+	    gamePausedText = new Text(0, 0, resourcesManager.game_font, "Paused!", vbom);
+	    attachChild(gamePausedText);
+	    gamePausedText.setVisible(false);
+	}
+
+	private void displayGameOverText()
+	{
+	    camera.setChaseEntity(null);
+	    gameOverText.setPosition(camera.getCenterX(), camera.getCenterY());
+	    attachChild(gameOverText);
+	    gameOverDisplayed = true;
+	}
+	
+	private void setPauseText(boolean active)
+	{  
+	    gamePausedText.setPosition(camera.getCenterX(), camera.getCenterY()+80);
+	    if (active)
+		{
+			gamePausedText.setVisible(true);
+		}
+		else
+		{
+			gamePausedText.setVisible(false);
+		}
 	}
 	
 	public void loadLevel()
@@ -464,32 +496,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	        }
 	    }
 	    return false;
-	}
-	
-	private void createGameOverText()
-	{
-	    gameOverText = new Text(0, 0, resourcesManager.game_font, "Game Over!", vbom);
-	}
-	
-	private void displayGameOverText()
-	{
-	    camera.setChaseEntity(null);
-	    gameOverText.setPosition(camera.getCenterX(), camera.getCenterY());
-	    attachChild(gameOverText);
-	    gameOverDisplayed = true;
-	}
-	
-	private void createWonText(String str)
-	{
-	    gameWonText = new Text(0, 0, resourcesManager.game_font, str, vbom);
-	}
-	
-	private void displayWonText()
-	{
-	    camera.setChaseEntity(null);
-	    gameWonText.setPosition(camera.getCenterX(), camera.getCenterY());
-	    attachChild(gameWonText);
-	    gameWon = true;
 	}
 	
 	private void levelIncrease() {
